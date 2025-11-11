@@ -1,0 +1,33 @@
+{
+  "name": "15-preact",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "build": "preact build",
+    "dev": "preact watch",
+    "lint": "eslint src",
+    "serve": "preact build && preact serve",
+    "start": "per-env",
+    "start:development": "npm run -s dev",
+    "start:production": "npm run -s serve"
+  },
+  "eslintConfig": {
+    "extends": "eslint-config-synacor"
+  },
+  "eslintIgnore": [
+    "build/*"
+  ],
+  "dependencies": {
+    "preact": "^10.18.1",
+    "preact-render-to-string": "^6.2.2",
+    "preact-router": "^4.1.2"
+  },
+  "devDependencies": {
+    "eslint": "^4.9.0",
+    "eslint-config-synacor": "^2.0.2",
+    "identity-obj-proxy": "^3.0.0",
+    "per-env": "^1.0.2",
+    "preact-cli": "^3.5.0"
+  }
+}

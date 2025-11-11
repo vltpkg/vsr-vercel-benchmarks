@@ -1,0 +1,8 @@
+{
+  "name": "node-gyp-v0-global",
+  "private": true,
+  "dependencies": {
+    "isolated-vm": "4.6.0"
+  },
+  "packageManager": "yarn@1.22.11"
+}

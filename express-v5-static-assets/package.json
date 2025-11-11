@@ -1,0 +1,6 @@
+{
+  "name": "express-v5-static-assets",
+  "dependencies": {
+    "express": "5.1.0"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "scripts": {
+    "build": "gatsby -v && gatsby build",
+    "clean": "gatsby clean",
+    "develop": "gatsby develop",
+    "serve": "gatsby serve",
+    "start": "gatsby develop"
+  },
+  "dependencies": {
+    "gatsby": "4.25.7",
+    "prop-types": "^15.8.1",
+    "react": "^18.1.0",
+    "react-dom": "^18.1.0"
+  }
+}

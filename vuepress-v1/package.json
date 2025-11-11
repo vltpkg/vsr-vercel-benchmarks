@@ -1,0 +1,19 @@
+{
+  "name": "vuepress-v1",
+  "version": "0.0.1",
+  "description": "",
+  "repository": "none/vuepress-v1",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "build": "vuepress build src",
+    "dev": "vuepress dev src"
+  },
+  "devDependencies": {
+    "vuepress": "^1.5.3"
+  },
+  "authors": {
+    "name": "Vercel",
+    "email": "support@vercel.com"
+  }
+}

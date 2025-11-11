@@ -1,0 +1,20 @@
+{
+  "name": "vitepress-v1",
+  "version": "1.0.0",
+  "description": "",
+  "repository": "none/vitepress-v1",
+  "license": "MIT",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vitepress dev docs",
+    "build": "vitepress build docs",
+    "serve": "vitepress serve docs"
+  },
+  "devDependencies": {
+    "vitepress": "1.1.3"
+  },
+  "authors": {
+    "name": "Vercel",
+    "email": "support@vercel.com"
+  }
+}

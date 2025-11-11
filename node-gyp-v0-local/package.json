@@ -1,0 +1,9 @@
+{
+  "name": "node-gyp-v0-local",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "sqlite3": "5.1.6"
+  },
+  "packageManager": "yarn@1.22.11"
+}

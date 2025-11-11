@@ -1,0 +1,15 @@
+{
+  "scripts": {
+    "build": "docusaurus-build",
+    "dev": "docusaurus-start --port $PORT",
+    "examples": "docusaurus-examples",
+    "publish-gh-pages": "docusaurus-publish",
+    "rename-version": "docusaurus-rename-version",
+    "start": "docusaurus-start",
+    "version": "docusaurus-version",
+    "write-translations": "docusaurus-write-translations"
+  },
+  "devDependencies": {
+    "docusaurus": "^1.12.0"
+  }
+}

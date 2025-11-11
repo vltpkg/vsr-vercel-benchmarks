@@ -1,0 +1,13 @@
+{
+  "name": "parcel-v2",
+  "version": "1.0.0",
+  "private": true,
+  "source": "src/index.html",
+  "scripts": {
+    "build": "parcel build",
+    "start": "parcel"
+  },
+  "devDependencies": {
+    "parcel": "^2.12.0"
+  }
+}
