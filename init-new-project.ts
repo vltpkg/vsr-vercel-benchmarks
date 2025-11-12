@@ -1,11 +1,7 @@
 #!/usr/bin/env node
 
 import { Vercel } from '@vercel/sdk'
-import {
-  customEnvironment as CUSTOM_ENVIRONMENT_SLUG,
-  projectSettings,
-  teamId as TEAM_ID,
-} from './api/data.ts'
+import { customEnvironment, projectSettings, teamId } from './api/constants.ts'
 import { readFileSync, readdirSync } from 'fs'
 import { join, relative } from 'path'
 
@@ -23,11 +19,6 @@ if (!VERCEL_TOKEN) {
   process.exit(1)
 }
 
-if (!TEAM_ID) {
-  console.error('Error: TEAM_ID is not set in .env')
-  process.exit(1)
-}
-
 const vercel = new Vercel({ bearerToken: VERCEL_TOKEN })
 
 async function getOrCreateProject(
@@ -38,7 +29,7 @@ async function getOrCreateProject(
   try {
     // Try to find existing project first
     const projects = await vercel.projects.getProjects({
-      teamId: TEAM_ID,
+      teamId: teamId,
       search: projectName,
     })
 
@@ -53,7 +44,7 @@ async function getOrCreateProject(
 
     // Create new project if it doesn't exist
     const newProject = await vercel.projects.createProject({
-      teamId: TEAM_ID,
+      teamId: teamId,
       requestBody: {
         name: projectName,
       },
@@ -72,25 +63,23 @@ async function getOrCreateProject(
 }
 
 async function createCustomEnvironment(projectId: string): Promise<string> {
-  console.log(
-    `\nStep 2: Creating '${CUSTOM_ENVIRONMENT_SLUG}' custom environment...`,
-  )
+  console.log(`\nStep 2: Creating '${customEnvironment}' custom environment...`)
 
   try {
     // Check if environment already exists
     const existingEnvs =
       await vercel.environment.getV9ProjectsIdOrNameCustomEnvironments({
         idOrName: projectId,
-        teamId: TEAM_ID,
+        teamId: teamId,
       })
 
     const existingEnv = existingEnvs.environments?.find(
-      (env) => env.slug === CUSTOM_ENVIRONMENT_SLUG,
+      (env) => env.slug === customEnvironment,
     )
 
     if (existingEnv?.id) {
       console.log(
-        `✓ Custom environment '${CUSTOM_ENVIRONMENT_SLUG}' already exists (ID: ${existingEnv.id})`,
+        `✓ Custom environment '${customEnvironment}' already exists (ID: ${existingEnv.id})`,
       )
       return existingEnv.id
     }
@@ -98,9 +87,9 @@ async function createCustomEnvironment(projectId: string): Promise<string> {
     // Create the custom environment
     const newEnv = await vercel.environment.createCustomEnvironment({
       idOrName: projectId,
-      teamId: TEAM_ID,
+      teamId: teamId,
       requestBody: {
-        slug: CUSTOM_ENVIRONMENT_SLUG,
+        slug: customEnvironment,
         description: 'VSR test environment',
       },
     })
@@ -110,7 +99,7 @@ async function createCustomEnvironment(projectId: string): Promise<string> {
     }
 
     console.log(
-      `✓ Custom environment '${CUSTOM_ENVIRONMENT_SLUG}' created successfully (ID: ${newEnv.id})`,
+      `✓ Custom environment '${customEnvironment}' created successfully (ID: ${newEnv.id})`,
     )
     return newEnv.id
   } catch (error) {
@@ -148,7 +137,7 @@ async function setEnvironmentVariables(
   console.log('  Setting VERCEL_FORCE_NO_BUILD_CACHE=1 for all environments...')
   await vercel.projects.createProjectEnv({
     idOrName: projectId,
-    teamId: TEAM_ID,
+    teamId: teamId,
     upsert: 'true',
     requestBody: {
       key: 'VERCEL_FORCE_NO_BUILD_CACHE',
@@ -162,11 +151,11 @@ async function setEnvironmentVariables(
 
   // Set NPM_CONFIG_REGISTRY for custom environment only
   console.log(
-    `  Setting NPM_CONFIG_REGISTRY for '${CUSTOM_ENVIRONMENT_SLUG}' environment...`,
+    `  Setting NPM_CONFIG_REGISTRY for '${customEnvironment}' environment...`,
   )
   await vercel.projects.createProjectEnv({
     idOrName: projectId,
-    teamId: TEAM_ID,
+    teamId: teamId,
     upsert: 'true',
     requestBody: {
       key: 'NPM_CONFIG_REGISTRY',
@@ -176,7 +165,7 @@ async function setEnvironmentVariables(
     },
   })
   console.log(
-    `✓ NPM_CONFIG_REGISTRY set for '${CUSTOM_ENVIRONMENT_SLUG}' environment`,
+    `✓ NPM_CONFIG_REGISTRY set for '${customEnvironment}' environment`,
   )
 }
 
@@ -198,7 +187,7 @@ async function createInitialDeployment(
 
     // Create deployment with all project files
     const deployment = await vercel.deployments.createDeployment({
-      teamId: TEAM_ID,
+      teamId: teamId,
       skipAutoDetectionConfirmation: '1',
       requestBody: {
         name: projectName,
@@ -236,13 +225,11 @@ async function triggerDeployments(
   console.log(`✓ Production deployment created: https://${prodUrl}`)
 
   // Create custom environment deployment
-  console.log(`  Creating ${CUSTOM_ENVIRONMENT_SLUG} environment deployment...`)
+  console.log(`  Creating ${customEnvironment} environment deployment...`)
   const customUrl = await createInitialDeployment(projectName, projectDir, {
     customEnvironmentSlugOrId: customEnvId,
   })
-  console.log(
-    `✓ ${CUSTOM_ENVIRONMENT_SLUG} deployment created: https://${customUrl}`,
-  )
+  console.log(`✓ ${customEnvironment} deployment created: https://${customUrl}`)
 
   return { production: prodUrl, custom: customUrl }
 }
@@ -275,11 +262,9 @@ async function main() {
     console.log('✓ All done!')
     console.log('========================================')
     console.log(`Project: ${projectName} (ID: ${project.id})`)
-    console.log(
-      `Custom Environment: ${CUSTOM_ENVIRONMENT_SLUG} (ID: ${customEnvId})`,
-    )
+    console.log(`Custom Environment: ${customEnvironment} (ID: ${customEnvId})`)
     console.log(`Production: https://${production}`)
-    console.log(`Custom (${CUSTOM_ENVIRONMENT_SLUG}): https://${custom}`)
+    console.log(`Custom (${customEnvironment}): https://${custom}`)
     console.log('========================================')
   } catch (error) {
     console.error('\nError:', error instanceof Error ? error.message : error)

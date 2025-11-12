@@ -1,7 +1,7 @@
 export const customEnvironment = 'vsr'
 
-export const environments = [
-  'production', // default is npm
+export const registries = [
+  'npm', // default is npm
   customEnvironment,
 ] as const
 

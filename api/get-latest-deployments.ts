@@ -1,5 +1,6 @@
 import { Vercel } from '@vercel/sdk'
-import { environments, teamId } from './data.js'
+import { registries, teamId } from './constants.js'
+import { errorResponse, getBenchmarkProjects } from './util.js'
 import type { Deployments } from '@vercel/sdk/models/getdeploymentsop.js'
 
 const vercel = new Vercel({
@@ -10,69 +11,39 @@ export async function GET(request: Request) {
   const url = new URL(request.url)
   const full = url.searchParams.get('full') === 'true'
   const logs = url.searchParams.get('logs') === 'true'
+  const limit = url.searchParams.get('limit') ?? '100'
+  const filters = url.searchParams.getAll('filter')
 
   const deployments = []
 
-  const projects = await vercel.projects.getProjects({
-    teamId,
-    search: 'benchmark-',
-    limit: '100',
-  })
+  const projects = await getBenchmarkProjects({ limit, filters })
 
-  const filteredProjects =
-    projects.projects?.filter(
-      (project) =>
-        project.name.startsWith('benchmark-') &&
-        project.name !== 'benchmark-deploy',
-    ) ?? []
-
-  if (!filteredProjects.length) {
-    return new Response(
-      JSON.stringify({ error: 'No projects found' }, null, 2),
-      { status: 500 },
-    )
+  if (!projects.length) {
+    return errorResponse('No projects found')
   }
 
-  for (const project of filteredProjects) {
-    for (const environment of environments) {
+  for (const project of projects) {
+    for (const registry of registries) {
+      const target = registry === 'npm' ? 'production' : registry
+
       const deploymentsData = await vercel.deployments.getDeployments({
         limit: 1,
         projectId: project.id,
         teamId,
-        target: environment,
+        target,
       })
 
       const deployment = deploymentsData.deployments[0]
 
       if (!deployment) {
-        return new Response(
-          JSON.stringify(
-            {
-              error: `No deployment found for ${project.name} and ${environment}`,
-            },
-            null,
-            2,
-          ),
-          { status: 500 },
-        )
-      }
-
-      if (!deployment.ready || !deployment.buildingAt) {
-        return new Response(
-          JSON.stringify(
-            {
-              error: `Deployment not ready for ${project.name} and ${environment}`,
-            },
-            null,
-            2,
-          ),
-          { status: 500 },
+        return errorResponse(
+          `No deployment found for ${project.name} and ${target}`,
         )
       }
 
       const result: {
         name: string
-        environment: string
+        registry: string
         buildTime: number | null
         created: Deployments['created']
         createdTime: string
@@ -81,9 +52,11 @@ export async function GET(request: Request) {
         deployment?: Deployments
       } = {
         name: project.name,
-        environment,
+        registry,
         buildTime:
-          deployment.state === 'READY'
+          deployment.state === 'READY' &&
+          deployment.ready &&
+          deployment.buildingAt
             ? deployment.ready - deployment.buildingAt
             : null,
         state: deployment.state,

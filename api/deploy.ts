@@ -1,51 +1,37 @@
-import { Vercel } from '@vercel/sdk'
-import { environments, teamId, projectSettings } from './data.js'
+import { getBenchmarkProjects, errorResponse, vercel } from './util.js'
 import { CreateDeploymentRequest } from '@vercel/sdk/models/createdeploymentop.js'
-
-const vercel = new Vercel({
-  bearerToken: process.env.DEPLOY_TOKEN,
-})
+import { registries, teamId, projectSettings } from './constants.js'
 
 export async function POST(request: Request) {
   const url = new URL(request.url)
   const full = url.searchParams.get('full') === 'true'
+  const limit = url.searchParams.get('limit') ?? '100'
+  const filters = url.searchParams.getAll('filter')
 
   const deploymentsToCreate: CreateDeploymentRequest[] = []
 
-  const projects = await vercel.projects.getProjects({
-    teamId,
-    search: 'benchmark-',
-    limit: '100',
-  })
+  const projects = await getBenchmarkProjects({ limit, filters })
 
-  const filteredProjects =
-    projects.projects?.filter(
-      (project) =>
-        project.name.startsWith('benchmark-') &&
-        project.name !== 'benchmark-deploy',
-    ) ?? []
+  if (!projects.length) {
+    return errorResponse('No projects found')
+  }
 
-  for (const project of filteredProjects) {
-    for (const environment of environments) {
+  for (const project of projects) {
+    for (const registry of registries) {
+      const target = registry === 'npm' ? 'production' : registry
+
       const deploymentsData = await vercel.deployments.getDeployments({
         limit: 1,
         projectId: project.id,
         teamId,
-        target: environment,
+        target,
       })
 
       const deployment = deploymentsData.deployments[0]
 
       if (!deployment) {
-        return new Response(
-          JSON.stringify(
-            {
-              error: `No deployment found for ${project.name} and ${environment}`,
-            },
-            null,
-            2,
-          ),
-          { status: 500 },
+        return errorResponse(
+          `No deployment found for ${project.name} and ${registry}`,
         )
       }
 
@@ -54,9 +40,9 @@ export async function POST(request: Request) {
         requestBody: {
           name: project.name,
           deploymentId: deployment.uid,
-          target: environment === 'vsr' ? undefined : environment,
-          customEnvironmentSlugOrId:
-            environment === 'production' ? undefined : environment,
+          ...(registry === 'npm'
+            ? { target }
+            : { customEnvironmentSlugOrId: target }),
           projectSettings: {
             ...projectSettings,
           },
@@ -77,7 +63,10 @@ export async function POST(request: Request) {
         status: deployment.status,
         name: deployment.name,
         id: deployment.id,
-        environment: deployment.oidcTokenClaims?.environment,
+        registry:
+          deployment.oidcTokenClaims?.environment === 'production'
+            ? 'npm'
+            : deployment.oidcTokenClaims?.environment,
         inspectorUrl: deployment.inspectorUrl,
       }))
 
