@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "mkdir dist && echo \"hello world\" > dist/index.html && echo done",
+    "build": "ng build",
     "ng": "ng",
     "start": "ng serve",
     "test": "ng test",

@@ -1,0 +1,19 @@
+{
+  "name": "framework-test-matrix-apps-deploy",
+  "version": "1.0.0",
+  "scripts": {
+    "init-new-project": "node --env-file=.env init-new-project.ts",
+    "deploy": "vercel --prod",
+    "get-latest-deployments": "curl https://benchmark-deploy.vercel.app/api/get-latest-deployments",
+    "deploy-all": "curl -X POST https://benchmark-deploy.vercel.app/api/deploy"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@vercel/sdk": "^1.16.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.5",
+    "prettier": "^3.6.2"
+  },
+  "type": "module"
+}
