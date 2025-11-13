@@ -1,6 +1,6 @@
 import { Vercel } from '@vercel/sdk'
-import { registries, teamId } from './constants.js'
-import { errorResponse, getBenchmarkProjects } from './util.js'
+import { registries, teamId } from './constants.ts'
+import { errorResponse, getBenchmarkProjects } from './util.ts'
 import type { Deployments } from '@vercel/sdk/models/getdeploymentsop.js'
 
 const vercel = new Vercel({
@@ -16,7 +16,7 @@ export async function GET(request: Request) {
 
   const deployments = []
 
-  const projects = await getBenchmarkProjects({ limit, filters })
+  const projects = await getBenchmarkProjects(vercel, { limit, filters })
 
   if (!projects.length) {
     return errorResponse('No projects found')

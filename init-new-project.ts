@@ -47,6 +47,7 @@ async function getOrCreateProject(
       teamId: teamId,
       requestBody: {
         name: projectName,
+        ...projectSettings,
       },
     })
 

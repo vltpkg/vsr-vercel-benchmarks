@@ -1,17 +1,16 @@
 import { Vercel } from '@vercel/sdk'
-import { customEnvironment, teamId } from './constants.js'
+import { teamId } from './constants.ts'
 
-export const vercel = new Vercel({
-  bearerToken: process.env.DEPLOY_TOKEN,
-})
-
-export const getBenchmarkProjects = async ({
-  limit = '100',
-  filters = [],
-}: {
-  limit?: string
-  filters?: string[]
-}) => {
+export const getBenchmarkProjects = async (
+  vercel: Vercel,
+  {
+    limit = '100',
+    filters = [],
+  }: {
+    limit?: string
+    filters?: string[]
+  },
+) => {
   const projects = await vercel.projects.getProjects({
     teamId,
     search: 'benchmark-',

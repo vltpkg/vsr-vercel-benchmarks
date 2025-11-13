@@ -1,6 +1,11 @@
-import { getBenchmarkProjects, errorResponse, vercel } from './util.js'
+import { getBenchmarkProjects, errorResponse } from './util.ts'
 import { CreateDeploymentRequest } from '@vercel/sdk/models/createdeploymentop.js'
-import { registries, teamId, projectSettings } from './constants.js'
+import { registries, teamId, projectSettings } from './constants.ts'
+import { Vercel } from '@vercel/sdk'
+
+const vercel = new Vercel({
+  bearerToken: process.env.DEPLOY_TOKEN,
+})
 
 export async function POST(request: Request) {
   const url = new URL(request.url)
@@ -10,7 +15,7 @@ export async function POST(request: Request) {
 
   const deploymentsToCreate: CreateDeploymentRequest[] = []
 
-  const projects = await getBenchmarkProjects({ limit, filters })
+  const projects = await getBenchmarkProjects(vercel, { limit, filters })
 
   if (!projects.length) {
     return errorResponse('No projects found')
