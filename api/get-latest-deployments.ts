@@ -37,6 +37,8 @@ export async function GET(request: Request) {
     for (const registry of registries) {
       const target = registry === 'npm' ? 'production' : registry
 
+      // TODO: we increase the limit and make sure we get at least 1 of each registry
+      // which would be faster.
       const deploymentsData = await vercel.deployments.getDeployments({
         limit: 1,
         projectId: project.id,
@@ -53,6 +55,7 @@ export async function GET(request: Request) {
       }
 
       const result: {
+        id: string
         name: string
         registry: string
         buildDuration: number | null
@@ -64,6 +67,7 @@ export async function GET(request: Request) {
         logs?: string[]
         deployment?: Deployments
       } = {
+        id: `${project.name}-${registry}`,
         name: project.name,
         registry,
         state: deployment.state,
@@ -98,5 +102,11 @@ export async function GET(request: Request) {
     }
   }
 
-  return new Response(JSON.stringify(deployments, null, 2))
+  return new Response(
+    JSON.stringify(
+      deployments.sort((a, b) => a.id.localeCompare(b.id)),
+      null,
+      2,
+    ),
+  )
 }
