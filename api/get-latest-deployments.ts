@@ -55,7 +55,6 @@ export async function GET(request: Request) {
       }
 
       const result: {
-        id: string
         name: string
         registry: string
         buildDuration: number | null
@@ -67,7 +66,6 @@ export async function GET(request: Request) {
         logs?: string[]
         deployment?: Deployments
       } = {
-        id: `${project.name}-${registry}`,
         name: project.name,
         registry,
         state: deployment.state,
@@ -104,7 +102,11 @@ export async function GET(request: Request) {
 
   return new Response(
     JSON.stringify(
-      deployments.sort((a, b) => a.id.localeCompare(b.id)),
+      deployments.sort((a, b) => {
+        return `${a.name}-${a.registry}`.localeCompare(
+          `${b.name}-${b.registry}`,
+        )
+      }),
       null,
       2,
     ),

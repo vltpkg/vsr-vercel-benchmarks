@@ -25,29 +25,48 @@ export async function GET(request: Request) {
     }
   }
 
-  // Separate valid comparisons and error comparisons
-  const allComparisons = Array.from(grouped.entries())
-    .map(([name, group]) => ({
-      name: name.replace('benchmark-', ''),
-      npm: group.npm,
-      vsr: group.vsr,
-      hasError:
-        !group.npm ||
-        !group.vsr ||
-        group.npm.state === 'ERROR' ||
-        group.vsr.state === 'ERROR',
-    }))
-    .sort((a, b) => a.name.localeCompare(b.name))
+  // Build comparisons maintaining the order from latest.json
+  const comparisons: Array<{
+    name: string
+    npm: Deployment | undefined
+    vsr: Deployment | undefined
+    hasError: boolean
+  }> = []
 
-  const validComparisons = allComparisons
-    .filter((c) => !c.hasError)
-    .map((c) => ({
-      name: c.name,
-      npm: c.npm!.buildDuration!,
-      vsr: c.vsr!.buildDuration!,
-    }))
+  // Track which names we've seen to maintain order from latest.json
+  const seenNames = new Set<string>()
 
-  const errorComparisons = allComparisons.filter((c) => c.hasError)
+  for (const deployment of latest as Deployment[]) {
+    const name = deployment.name
+    if (!seenNames.has(name)) {
+      seenNames.add(name)
+      const group = grouped.get(name)!
+      comparisons.push({
+        name: name.replace('benchmark-', ''),
+        npm: group.npm,
+        vsr: group.vsr,
+        hasError:
+          !group.npm ||
+          !group.vsr ||
+          group.npm.state === 'ERROR' ||
+          group.vsr.state === 'ERROR',
+      })
+    }
+  }
+
+  const validCount = comparisons.filter((c) => !c.hasError).length
+  const errorCount = comparisons.filter((c) => c.hasError).length
+
+  // Calculate total build times for valid comparisons
+  const validComparisons = comparisons.filter((c) => !c.hasError)
+  const totalNpmTime = validComparisons.reduce(
+    (sum, c) => sum + (c.npm?.buildDuration || 0),
+    0,
+  )
+  const totalVsrTime = validComparisons.reduce(
+    (sum, c) => sum + (c.vsr?.buildDuration || 0),
+    0,
+  )
 
   // Find earliest and latest deployment times
   const allTimes = (latest as Deployment[])
@@ -58,51 +77,16 @@ export async function GET(request: Request) {
   const earliestDate = new Date(earliestTime).toLocaleString()
   const latestDate = new Date(latestTime).toLocaleString()
 
-  // Generate HTML with bar charts
-  const chartsHTML = validComparisons
-    .map((comparison) => {
-      // Calculate percentages relative to the max of the two values in this comparison
-      const maxForComparison = Math.max(comparison.npm, comparison.vsr)
-      const npmPercent = (comparison.npm / maxForComparison) * 100
-      const vsrPercent = (comparison.vsr / maxForComparison) * 100
-      const npmSeconds = (comparison.npm / 1000).toFixed(2)
-      const vsrSeconds = (comparison.vsr / 1000).toFixed(2)
-      const speedup = (comparison.vsr / comparison.npm).toFixed(2)
-
-      return `
-      <div class="comparison">
-        <h3>${comparison.name}</h3>
-        <div class="chart">
-          <div class="bar-row">
-            <div class="label">npm</div>
-            <div class="bar npm-bar" style="width: ${npmPercent}%">
-              <span class="value">${npmSeconds}s</span>
-            </div>
-          </div>
-          <div class="bar-row">
-            <div class="label">vsr</div>
-            <div class="bar vsr-bar" style="width: ${vsrPercent}%">
-              <span class="value">${vsrSeconds}s</span>
-            </div>
-          </div>
-        </div>
-        <div class="speedup">${speedup}x ${comparison.vsr > comparison.npm ? 'slower' : 'faster'}</div>
-      </div>
-    `
-    })
-    .join('')
-
-  const errorsHTML = errorComparisons
+  // Generate HTML with bar charts for all comparisons
+  const chartsHTML = comparisons
     .map((comparison) => {
       const npmState = comparison.npm?.state || 'MISSING'
       const vsrState = comparison.vsr?.state || 'MISSING'
       const npmTime = comparison.npm?.buildDuration
       const vsrTime = comparison.vsr?.buildDuration
+      const hasError = comparison.hasError
 
-      // Calculate bar widths if both have build times
-      let npmBar = ''
-      let vsrBar = ''
-
+      // Show bars if both have build times, otherwise show simple state view
       if (npmTime && vsrTime) {
         const maxForComparison = Math.max(npmTime, vsrTime)
         const npmPercent = (npmTime / maxForComparison) * 100
@@ -111,43 +95,36 @@ export async function GET(request: Request) {
         const vsrSeconds = (vsrTime / 1000).toFixed(2)
         const speedup = (vsrTime / npmTime).toFixed(2)
 
-        npmBar = `
-          <div class="bar-row">
-            <div class="label">npm</div>
-            <div class="bar-container">
-              <div class="bar npm-bar ${npmState === 'ERROR' ? 'error-bar' : ''}" style="width: ${npmPercent}%">
-                <span class="value">${npmSeconds}s</span>
-              </div>
-            </div>
-            <div class="state-badge ${npmState === 'ERROR' ? 'error' : ''}">${npmState}</div>
-          </div>
-        `
-        vsrBar = `
-          <div class="bar-row">
-            <div class="label">vsr</div>
-            <div class="bar-container">
-              <div class="bar vsr-bar ${vsrState === 'ERROR' ? 'error-bar' : ''}" style="width: ${vsrPercent}%">
-                <span class="value">${vsrSeconds}s</span>
-              </div>
-            </div>
-            <div class="state-badge ${vsrState === 'ERROR' ? 'error' : ''}">${vsrState}</div>
-          </div>
-        `
-
         return `
-        <div class="comparison error-comparison">
+        <div class="comparison">
           <h3>${comparison.name}</h3>
           <div class="chart">
-            ${npmBar}
-            ${vsrBar}
+            <div class="bar-row">
+              <div class="label">npm</div>
+              <div class="bar-container">
+                <div class="bar npm-bar" style="width: ${npmPercent}%">
+                  <span class="value">${npmSeconds}s</span>
+                </div>
+              </div>
+              <div class="state-badge ${npmState === 'ERROR' ? 'error' : 'ready'}">${npmState}</div>
+            </div>
+            <div class="bar-row">
+              <div class="label">vsr</div>
+              <div class="bar-container">
+                <div class="bar vsr-bar" style="width: ${vsrPercent}%">
+                  <span class="value">${vsrSeconds}s</span>
+                </div>
+              </div>
+              <div class="state-badge ${vsrState === 'ERROR' ? 'error' : 'ready'}">${vsrState}</div>
+            </div>
           </div>
-          <div class="speedup error-speedup">${speedup}x ${vsrTime > npmTime ? 'slower' : 'faster'} (with errors)</div>
+          <div class="speedup">${speedup}x ${vsrTime > npmTime ? 'slower' : 'faster'}${hasError ? ' <strong class="error-text">(with errors)</strong>' : ''}</div>
         </div>
         `
       } else {
         // Show simple state badges if no build times available
         return `
-        <div class="comparison error-comparison">
+        <div class="comparison">
           <h3>${comparison.name}</h3>
           <div class="error-details">
             <div class="error-row">
@@ -172,7 +149,7 @@ export async function GET(request: Request) {
 <html>
 <head>
   <meta charset="utf-8">
-  <title>is vsr on vercel fast yet?</title>
+  <title>Is vsr on Vercel Fast Yet?</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -184,7 +161,26 @@ export async function GET(request: Request) {
     h1 {
       text-align: center;
       color: #333;
-      margin-bottom: 40px;
+      margin-bottom: 20px;
+    }
+    .answer {
+      text-align: center;
+      font-size: 72px;
+      font-weight: 900;
+      margin: 0 0 20px 0;
+      padding: 20px;
+      border-radius: 12px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+    .answer.yes {
+      color: #27ae60;
+      background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+      border: 3px solid #27ae60;
+    }
+    .answer.no {
+      color: #e74c3c;
+      background: linear-gradient(135deg, #f8d7da 0%, #f5c6cb 100%);
+      border: 3px solid #e74c3c;
     }
     .comparison {
       background: white;
@@ -250,9 +246,20 @@ export async function GET(request: Request) {
       background: white;
       border-radius: 8px;
       padding: 20px;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       text-align: center;
+    }
+    .summary-comparison {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border: 2px solid #007bff;
+    }
+    .summary-comparison h3 {
+      color: #007bff;
+      font-size: 20px;
+    }
+    .summary-comparison .speedup {
+      font-size: 16px;
     }
     .summary h2 {
       margin: 0 0 10px 0;
@@ -271,24 +278,7 @@ export async function GET(request: Request) {
     .timestamps p {
       margin: 3px 0;
     }
-    .errors-section {
-      margin-top: 40px;
-      padding-top: 20px;
-      border-top: 2px solid #ddd;
-    }
-    .errors-section h2 {
-      text-align: center;
-      color: #e74c3c;
-      margin-bottom: 20px;
-    }
-    .error-comparison {
-      border-left: 4px solid #e74c3c;
-    }
-    .error-bar {
-      opacity: 0.7;
-      border: 2px solid #e74c3c;
-    }
-    .error-speedup {
+    .error-text {
       color: #e74c3c;
     }
     .error-details {
@@ -313,6 +303,10 @@ export async function GET(request: Request) {
       background: #e74c3c;
       color: white;
     }
+    .state-badge.ready {
+      background: #27ae60;
+      color: white;
+    }
     .state-badge.missing {
       background: #95a5a6;
       color: white;
@@ -325,23 +319,49 @@ export async function GET(request: Request) {
 </head>
 <body>
   <h1>Is vsr on Vercel Fast Yet?</h1>
+  ${
+    totalNpmTime > 0 && totalVsrTime > 0
+      ? `<div class="answer ${totalVsrTime < totalNpmTime ? 'yes' : 'no'}">
+    ${totalVsrTime < totalNpmTime ? 'YES' : 'NO'}
+  </div>`
+      : ''
+  }
   <div class="summary">
-    <p><strong>${validComparisons.length}</strong> valid comparisons</p>
-    <p><strong>${errorComparisons.length}</strong> comparisons with errors</p>
+    <p><strong>${validCount + errorCount}</strong> total projects (<strong class="error-text">${errorCount}</strong> with errors)</p>
     <div class="timestamps">
       <p><strong>Earliest deployment:</strong> ${earliestDate}</p>
       <p><strong>Latest deployment:</strong> ${latestDate}</p>
     </div>
   </div>
-  ${chartsHTML}
   ${
-    errorComparisons.length > 0
-      ? `<div class="errors-section">
-    <h2>Comparisons with Errors</h2>
-    ${errorsHTML}
+    totalNpmTime > 0 && totalVsrTime > 0
+      ? `<div class="comparison summary-comparison">
+    <h3>Total Build Time (${validCount} projects)</h3>
+    <div class="chart">
+      <div class="bar-row">
+        <div class="label">npm</div>
+        <div class="bar-container">
+          <div class="bar npm-bar" style="width: ${(totalNpmTime / Math.max(totalNpmTime, totalVsrTime)) * 100}%">
+            <span class="value">${(totalNpmTime / 1000).toFixed(2)}s</span>
+          </div>
+        </div>
+        <div class="state-badge ready">TOTAL</div>
+      </div>
+      <div class="bar-row">
+        <div class="label">vsr</div>
+        <div class="bar-container">
+          <div class="bar vsr-bar" style="width: ${(totalVsrTime / Math.max(totalNpmTime, totalVsrTime)) * 100}%">
+            <span class="value">${(totalVsrTime / 1000).toFixed(2)}s</span>
+          </div>
+        </div>
+        <div class="state-badge ready">TOTAL</div>
+      </div>
+    </div>
+    <div class="speedup"><strong>${(totalVsrTime / totalNpmTime).toFixed(2)}x ${totalVsrTime > totalNpmTime ? 'slower' : 'faster'}</strong></div>
   </div>`
       : ''
   }
+  ${chartsHTML}
 </body>
 </html>
 `
