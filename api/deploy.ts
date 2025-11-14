@@ -1,13 +1,23 @@
 import { getBenchmarkProjects, errorResponse } from './util.ts'
-import { CreateDeploymentRequest } from '@vercel/sdk/models/createdeploymentop.js'
-import { registries, teamId, projectSettings } from './constants.ts'
+import type { CreateDeploymentRequest } from '@vercel/sdk/models/createdeploymentop.js'
+import constants from './constants.json' with { type: 'json' }
 import { Vercel } from '@vercel/sdk'
+
+const { registries, teamId, projectSettings } = constants
 
 const vercel = new Vercel({
   bearerToken: process.env.DEPLOY_TOKEN,
 })
 
+const authToken = process.env.AUTH_TOKEN
+
 export async function POST(request: Request) {
+  const requestToken = request.headers.get('authorization')
+
+  if (!authToken || !requestToken || requestToken !== authToken) {
+    return errorResponse('Unauthorized', 401)
+  }
+
   const url = new URL(request.url)
   const full = url.searchParams.get('full') === 'true'
   const limit = url.searchParams.get('limit') ?? '100'

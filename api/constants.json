@@ -1,0 +1,10 @@
+{
+  "customEnvironment": "vsr",
+  "registries": ["npm", "vsr"],
+  "teamId": "team_I0bmFHPp3qnoaSnAA6xP70tU",
+  "projectSettings": {
+    "installCommand": "npm install --timing --loglevel=http",
+    "buildCommand": "mkdir dist && echo \"hello world\" > dist/index.html",
+    "outputDirectory": "dist"
+  }
+}

@@ -1,10 +1,11 @@
 #!/usr/bin/env node
 
 import { getBenchmarkProjects } from './api/util.ts'
-import { projectSettings, teamId } from './api/constants.ts'
+import constants from './api/constants.json' with { type: 'json' }
 import { Vercel } from '@vercel/sdk'
 
-const VERCEL_TOKEN = process.env.VERCEL_TOKEN
+const VERCEL_TOKEN = process.env.VERCEL_TOKEN!
+const { projectSettings, teamId } = constants
 
 if (!VERCEL_TOKEN) {
   console.error('Error: VERCEL_TOKEN is not set in .env')

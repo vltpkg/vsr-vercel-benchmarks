@@ -5,7 +5,7 @@
     "init-new-project": "node --env-file=.env init-new-project.ts",
     "deploy": "vercel --prod",
     "get-latest-deployments": "curl https://benchmark-deploy.vercel.app/api/get-latest-deployments",
-    "deploy-all": "curl -X POST https://benchmark-deploy.vercel.app/api/deploy"
+    "trigger-benchmark": "node --env-file=.env deploy.ts"
   },
   "license": "ISC",
   "dependencies": {
@@ -13,7 +13,8 @@
   },
   "devDependencies": {
     "@types/node": "^22.10.5",
-    "prettier": "^3.6.2"
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.3"
   },
   "type": "module"
 }

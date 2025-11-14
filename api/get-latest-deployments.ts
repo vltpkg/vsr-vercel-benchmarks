@@ -1,7 +1,9 @@
 import { Vercel } from '@vercel/sdk'
-import { registries, teamId } from './constants.ts'
+import constants from './constants.json' with { type: 'json' }
 import { errorResponse, getBenchmarkProjects } from './util.ts'
 import type { Deployments } from '@vercel/sdk/models/getdeploymentsop.js'
+
+const { registries, teamId } = constants
 
 const vercel = new Vercel({
   bearerToken: process.env.DEPLOY_TOKEN,

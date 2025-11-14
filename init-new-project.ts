@@ -1,12 +1,14 @@
 #!/usr/bin/env node
 
 import { Vercel } from '@vercel/sdk'
-import { customEnvironment, projectSettings, teamId } from './api/constants.ts'
+import constants from './api/constants.json' with { type: 'json' }
 import { readFileSync, readdirSync } from 'fs'
 import { join, relative } from 'path'
 
-const VERCEL_TOKEN = process.env.VERCEL_TOKEN
-const PROJECT_DIR = process.argv[2]
+const { customEnvironment, projectSettings, teamId } = constants
+
+const VERCEL_TOKEN = process.env.VERCEL_TOKEN!
+const PROJECT_DIR = process.argv[2]!
 
 if (!PROJECT_DIR) {
   console.error('Usage: node deploy.ts <directory-name>')

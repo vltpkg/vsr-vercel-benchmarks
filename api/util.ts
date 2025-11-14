@@ -1,5 +1,7 @@
 import { Vercel } from '@vercel/sdk'
-import { teamId } from './constants.ts'
+import constants from './constants.json' with { type: 'json' }
+
+const { teamId } = constants
 
 export const getBenchmarkProjects = async (
   vercel: Vercel,
