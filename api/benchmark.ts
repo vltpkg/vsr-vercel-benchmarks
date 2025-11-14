@@ -172,7 +172,7 @@ export async function GET(request: Request) {
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Build Time Comparison: npm vs vsr</title>
+  <title>is vsr on vercel fast yet?</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -324,9 +324,8 @@ export async function GET(request: Request) {
   </style>
 </head>
 <body>
-  <h1>Build Time Comparison: npm vs vsr</h1>
+  <h1>Is vsr on Vercel Fast Yet?</h1>
   <div class="summary">
-    <h2>Summary</h2>
     <p><strong>${validComparisons.length}</strong> valid comparisons</p>
     <p><strong>${errorComparisons.length}</strong> comparisons with errors</p>
     <div class="timestamps">
