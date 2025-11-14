@@ -345,7 +345,6 @@ export async function GET(request: Request) {
             <span class="value">${(totalNpmTime / 1000).toFixed(2)}s</span>
           </div>
         </div>
-        <div class="state-badge ready">TOTAL</div>
       </div>
       <div class="bar-row">
         <div class="label">vsr</div>
@@ -354,7 +353,6 @@ export async function GET(request: Request) {
             <span class="value">${(totalVsrTime / 1000).toFixed(2)}s</span>
           </div>
         </div>
-        <div class="state-badge ready">TOTAL</div>
       </div>
     </div>
     <div class="speedup"><strong>${(totalVsrTime / totalNpmTime).toFixed(2)}x ${totalVsrTime > totalNpmTime ? 'slower' : 'faster'}</strong></div>
