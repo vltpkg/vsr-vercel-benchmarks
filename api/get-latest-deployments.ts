@@ -55,20 +55,32 @@ export async function GET(request: Request) {
       const result: {
         name: string
         registry: string
-        buildTime: number | null
+        buildDuration: number | null
+        queueDuration: number | null
         createdTime: string
+        buildStartTime: string | null
+        readyTime: string | null
         state: Deployments['state']
         logs?: string[]
         deployment?: Deployments
       } = {
         name: project.name,
         registry,
-        buildTime:
+        state: deployment.state,
+        buildDuration:
           deployment.ready && deployment.buildingAt
             ? deployment.ready - deployment.buildingAt
             : null,
-        state: deployment.state,
+        queueDuration: deployment.buildingAt
+          ? deployment.buildingAt - deployment.created
+          : null,
         createdTime: new Date(deployment.created).toISOString(),
+        buildStartTime: deployment.buildingAt
+          ? new Date(deployment.buildingAt).toISOString()
+          : null,
+        readyTime: deployment.ready
+          ? new Date(deployment.ready).toISOString()
+          : null,
         ...(full ? { deployment } : {}),
       }
 

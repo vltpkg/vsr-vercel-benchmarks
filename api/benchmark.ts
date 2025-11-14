@@ -3,7 +3,7 @@ import latest from './latest.json' with { type: 'json' }
 interface Deployment {
   name: string
   registry: string
-  buildTime: number | null
+  buildDuration: number | null
   state: string
   createdTime: string
 }
@@ -43,8 +43,8 @@ export async function GET(request: Request) {
     .filter((c) => !c.hasError)
     .map((c) => ({
       name: c.name,
-      npm: c.npm!.buildTime!,
-      vsr: c.vsr!.buildTime!,
+      npm: c.npm!.buildDuration!,
+      vsr: c.vsr!.buildDuration!,
     }))
 
   const errorComparisons = allComparisons.filter((c) => c.hasError)
@@ -96,8 +96,8 @@ export async function GET(request: Request) {
     .map((comparison) => {
       const npmState = comparison.npm?.state || 'MISSING'
       const vsrState = comparison.vsr?.state || 'MISSING'
-      const npmTime = comparison.npm?.buildTime
-      const vsrTime = comparison.vsr?.buildTime
+      const npmTime = comparison.npm?.buildDuration
+      const vsrTime = comparison.vsr?.buildDuration
 
       // Calculate bar widths if both have build times
       let npmBar = ''

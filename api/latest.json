@@ -2,784 +2,784 @@
   {
     "name": "benchmark-gridsome-v0",
     "registry": "npm",
-    "buildTime": 59384,
+    "buildDuration": 59384,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.334Z"
   },
   {
     "name": "benchmark-gridsome-v0",
     "registry": "vsr",
-    "buildTime": 745029,
+    "buildDuration": 745029,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.906Z"
   },
   {
     "name": "benchmark-remix-v2",
     "registry": "npm",
-    "buildTime": 32541,
+    "buildDuration": 32541,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.840Z"
   },
   {
     "name": "benchmark-remix-v2",
     "registry": "vsr",
-    "buildTime": 611159,
+    "buildDuration": 611159,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.876Z"
   },
   {
     "name": "benchmark-nextjs-v12-3",
     "registry": "npm",
-    "buildTime": 10532,
+    "buildDuration": 10532,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.806Z"
   },
   {
     "name": "benchmark-nextjs-v12-3",
     "registry": "vsr",
-    "buildTime": 20106,
+    "buildDuration": 20106,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.555Z"
   },
   {
     "name": "benchmark-nitro-v2",
     "registry": "npm",
-    "buildTime": 33600,
+    "buildDuration": 33600,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.662Z"
   },
   {
     "name": "benchmark-nitro-v2",
     "registry": "vsr",
-    "buildTime": 356783,
+    "buildDuration": 356783,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.712Z"
   },
   {
     "name": "benchmark-nextjs-v9",
     "registry": "npm",
-    "buildTime": 29607,
+    "buildDuration": 29607,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.691Z"
   },
   {
     "name": "benchmark-nextjs-v9",
     "registry": "vsr",
-    "buildTime": 112569,
+    "buildDuration": 112569,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.535Z"
   },
   {
     "name": "benchmark-svelte-v3",
     "registry": "npm",
-    "buildTime": 10502,
+    "buildDuration": 10502,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.792Z"
   },
   {
     "name": "benchmark-svelte-v3",
     "registry": "vsr",
-    "buildTime": 38390,
+    "buildDuration": 38390,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.867Z"
   },
   {
     "name": "benchmark-vitepress-v1",
     "registry": "npm",
-    "buildTime": 16667,
+    "buildDuration": 16667,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.590Z"
   },
   {
     "name": "benchmark-vitepress-v1",
     "registry": "vsr",
-    "buildTime": 115417,
+    "buildDuration": 115417,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.769Z"
   },
   {
     "name": "benchmark-eleventy-v2",
     "registry": "npm",
-    "buildTime": 12594,
+    "buildDuration": 12594,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.727Z"
   },
   {
     "name": "benchmark-eleventy-v2",
     "registry": "vsr",
-    "buildTime": 61731,
+    "buildDuration": 61731,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.723Z"
   },
   {
     "name": "benchmark-polymer-v3",
     "registry": "npm",
-    "buildTime": 36156,
+    "buildDuration": 36156,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.800Z"
   },
   {
     "name": "benchmark-polymer-v3",
     "registry": "vsr",
-    "buildTime": 97383,
+    "buildDuration": 97383,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.581Z"
   },
   {
     "name": "benchmark-angular-v16",
     "registry": "npm",
-    "buildTime": 43906,
+    "buildDuration": 43906,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.576Z"
   },
   {
     "name": "benchmark-angular-v16",
     "registry": "vsr",
-    "buildTime": 698813,
+    "buildDuration": 698813,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.785Z"
   },
   {
     "name": "benchmark-angular-v18",
     "registry": "npm",
-    "buildTime": 42586,
+    "buildDuration": 42586,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.845Z"
   },
   {
     "name": "benchmark-angular-v18",
     "registry": "vsr",
-    "buildTime": 141585,
+    "buildDuration": 141585,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.754Z"
   },
   {
     "name": "benchmark-nextjs-v13-3",
     "registry": "npm",
-    "buildTime": 21965,
+    "buildDuration": 21965,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.648Z"
   },
   {
     "name": "benchmark-nextjs-v13-3",
     "registry": "vsr",
-    "buildTime": 84434,
+    "buildDuration": 84434,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.564Z"
   },
   {
     "name": "benchmark-nextjs-v13-5",
     "registry": "npm",
-    "buildTime": 26248,
+    "buildDuration": 26248,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.789Z"
   },
   {
     "name": "benchmark-nextjs-v13-5",
     "registry": "vsr",
-    "buildTime": 75792,
+    "buildDuration": 75792,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.759Z"
   },
   {
     "name": "benchmark-nextjs-v14-0",
     "registry": "npm",
-    "buildTime": 28221,
+    "buildDuration": 28221,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.703Z"
   },
   {
     "name": "benchmark-nextjs-v14-0",
     "registry": "vsr",
-    "buildTime": 101548,
+    "buildDuration": 101548,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.560Z"
   },
   {
     "name": "benchmark-docusaurus-v1",
     "registry": "npm",
-    "buildTime": 33018,
+    "buildDuration": 33018,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.870Z"
   },
   {
     "name": "benchmark-docusaurus-v1",
     "registry": "vsr",
-    "buildTime": 615597,
+    "buildDuration": 615597,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.873Z"
   },
   {
     "name": "benchmark-gatsby-v4",
     "registry": "npm",
-    "buildTime": 65054,
+    "buildDuration": 65054,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.839Z"
   },
   {
     "name": "benchmark-gatsby-v4",
     "registry": "vsr",
-    "buildTime": 827512,
+    "buildDuration": 827512,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.789Z"
   },
   {
     "name": "benchmark-express-v5-0",
     "registry": "npm",
-    "buildTime": 9944,
+    "buildDuration": 9944,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.534Z"
   },
   {
     "name": "benchmark-express-v5-0",
     "registry": "vsr",
-    "buildTime": 11597,
+    "buildDuration": 11597,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.725Z"
   },
   {
     "name": "benchmark-nextjs-v12-0",
     "registry": "npm",
-    "buildTime": 10356,
+    "buildDuration": 10356,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.779Z"
   },
   {
     "name": "benchmark-nextjs-v12-0",
     "registry": "vsr",
-    "buildTime": 91377,
+    "buildDuration": 91377,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.934Z"
   },
   {
     "name": "benchmark-ember-v5",
     "registry": "npm",
-    "buildTime": 63542,
+    "buildDuration": 63542,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.902Z"
   },
   {
     "name": "benchmark-ember-v5",
     "registry": "vsr",
-    "buildTime": 741742,
+    "buildDuration": 741742,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.937Z"
   },
   {
     "name": "benchmark-nuxt-v3",
     "registry": "npm",
-    "buildTime": 51234,
+    "buildDuration": 51234,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.717Z"
   },
   {
     "name": "benchmark-nuxt-v3",
     "registry": "vsr",
-    "buildTime": 634940,
+    "buildDuration": 634940,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.939Z"
   },
   {
     "name": "benchmark-nextjs-v14-2",
     "registry": "npm",
-    "buildTime": 29062,
+    "buildDuration": 29062,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:32.350Z"
   },
   {
     "name": "benchmark-nextjs-v14-2",
     "registry": "vsr",
-    "buildTime": 77040,
+    "buildDuration": 77040,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.662Z"
   },
   {
     "name": "benchmark-nextjs-v15-3",
     "registry": "npm",
-    "buildTime": 17423,
+    "buildDuration": 17423,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:32.069Z"
   },
   {
     "name": "benchmark-nextjs-v15-3",
     "registry": "vsr",
-    "buildTime": 73377,
+    "buildDuration": 73377,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.813Z"
   },
   {
     "name": "benchmark-nextjs-v12-2",
     "registry": "npm",
-    "buildTime": 10626,
+    "buildDuration": 10626,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.679Z"
   },
   {
     "name": "benchmark-nextjs-v12-2",
     "registry": "vsr",
-    "buildTime": 60933,
+    "buildDuration": 60933,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.992Z"
   },
   {
     "name": "benchmark-preact-v10",
     "registry": "npm",
-    "buildTime": 52882,
+    "buildDuration": 52882,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.585Z"
   },
   {
     "name": "benchmark-preact-v10",
     "registry": "vsr",
-    "buildTime": 126871,
+    "buildDuration": 126871,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.680Z"
   },
   {
     "name": "benchmark-stencil-v4",
     "registry": "npm",
-    "buildTime": 634309,
+    "buildDuration": 634309,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.702Z"
   },
   {
     "name": "benchmark-stencil-v4",
     "registry": "vsr",
-    "buildTime": 950271,
+    "buildDuration": 950271,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.815Z"
   },
   {
     "name": "benchmark-blitz-v2",
     "registry": "npm",
-    "buildTime": 61761,
+    "buildDuration": 61761,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.620Z"
   },
   {
     "name": "benchmark-blitz-v2",
     "registry": "vsr",
-    "buildTime": 645294,
+    "buildDuration": 645294,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.975Z"
   },
   {
     "name": "benchmark-astro-v4",
     "registry": "npm",
-    "buildTime": 19944,
+    "buildDuration": 19944,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.824Z"
   },
   {
     "name": "benchmark-astro-v4",
     "registry": "vsr",
-    "buildTime": 77819,
+    "buildDuration": 77819,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.796Z"
   },
   {
     "name": "benchmark-docusaurus-v3",
     "registry": "npm",
-    "buildTime": 51347,
+    "buildDuration": 51347,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.979Z"
   },
   {
     "name": "benchmark-docusaurus-v3",
     "registry": "vsr",
-    "buildTime": 325428,
+    "buildDuration": 325428,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:32.393Z"
   },
   {
     "name": "benchmark-hexo-v6",
     "registry": "npm",
-    "buildTime": 13018,
+    "buildDuration": 13018,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.815Z"
   },
   {
     "name": "benchmark-hexo-v6",
     "registry": "vsr",
-    "buildTime": 118259,
+    "buildDuration": 118259,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.919Z"
   },
   {
     "name": "benchmark-nextjs-v13-2",
     "registry": "npm",
-    "buildTime": 22723,
+    "buildDuration": 22723,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.755Z"
   },
   {
     "name": "benchmark-nextjs-v13-2",
     "registry": "vsr",
-    "buildTime": 115714,
+    "buildDuration": 115714,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.743Z"
   },
   {
     "name": "benchmark-hydrogen-v2023",
     "registry": "npm",
-    "buildTime": 68730,
+    "buildDuration": 68730,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.888Z"
   },
   {
     "name": "benchmark-hydrogen-v2023",
     "registry": "vsr",
-    "buildTime": 774437,
+    "buildDuration": 774437,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.927Z"
   },
   {
     "name": "benchmark-vue-v3",
     "registry": "npm",
-    "buildTime": 10992,
+    "buildDuration": 10992,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.798Z"
   },
   {
     "name": "benchmark-vue-v3",
     "registry": "vsr",
-    "buildTime": 37831,
+    "buildDuration": 37831,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.778Z"
   },
   {
     "name": "benchmark-nextjs-v12-1",
     "registry": "npm",
-    "buildTime": 9794,
+    "buildDuration": 9794,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.993Z"
   },
   {
     "name": "benchmark-nextjs-v12-1",
     "registry": "vsr",
-    "buildTime": 53354,
+    "buildDuration": 53354,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.859Z"
   },
   {
     "name": "benchmark-gatsby-v5",
     "registry": "npm",
-    "buildTime": 65566,
+    "buildDuration": 65566,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:32.415Z"
   },
   {
     "name": "benchmark-gatsby-v5",
     "registry": "vsr",
-    "buildTime": 204469,
+    "buildDuration": 204469,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:32.715Z"
   },
   {
     "name": "benchmark-nextjs-v13-1",
     "registry": "npm",
-    "buildTime": 23394,
+    "buildDuration": 23394,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.749Z"
   },
   {
     "name": "benchmark-nextjs-v13-1",
     "registry": "vsr",
-    "buildTime": 314904,
+    "buildDuration": 314904,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.861Z"
   },
   {
     "name": "benchmark-nextjs-v13-4",
     "registry": "npm",
-    "buildTime": 28055,
+    "buildDuration": 28055,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.754Z"
   },
   {
     "name": "benchmark-nextjs-v13-4",
     "registry": "vsr",
-    "buildTime": 371909,
+    "buildDuration": 371909,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:32.058Z"
   },
   {
     "name": "benchmark-vite-v4",
     "registry": "npm",
-    "buildTime": 9579,
+    "buildDuration": 9579,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.762Z"
   },
   {
     "name": "benchmark-vite-v4",
     "registry": "vsr",
-    "buildTime": 169093,
+    "buildDuration": 169093,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:32.116Z"
   },
   {
     "name": "benchmark-vuepress-v1",
     "registry": "npm",
-    "buildTime": 42593,
+    "buildDuration": 42593,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.748Z"
   },
   {
     "name": "benchmark-vuepress-v1",
     "registry": "vsr",
-    "buildTime": 427667,
+    "buildDuration": 427667,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.780Z"
   },
   {
     "name": "benchmark-vite-v5",
     "registry": "npm",
-    "buildTime": 10798,
+    "buildDuration": 10798,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.863Z"
   },
   {
     "name": "benchmark-vite-v5",
     "registry": "vsr",
-    "buildTime": 29547,
+    "buildDuration": 29547,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.792Z"
   },
   {
     "name": "benchmark-storybook-v7",
     "registry": "npm",
-    "buildTime": 58997,
+    "buildDuration": 58997,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.964Z"
   },
   {
     "name": "benchmark-storybook-v7",
     "registry": "vsr",
-    "buildTime": 424158,
+    "buildDuration": 424158,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:32.040Z"
   },
   {
     "name": "benchmark-hono-v4",
     "registry": "npm",
-    "buildTime": 18963,
+    "buildDuration": 18963,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.743Z"
   },
   {
     "name": "benchmark-hono-v4",
     "registry": "vsr",
-    "buildTime": 182937,
+    "buildDuration": 182937,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.836Z"
   },
   {
     "name": "benchmark-angular-v17",
     "registry": "npm",
-    "buildTime": 38620,
+    "buildDuration": 38620,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.903Z"
   },
   {
     "name": "benchmark-angular-v17",
     "registry": "vsr",
-    "buildTime": 770394,
+    "buildDuration": 770394,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.827Z"
   },
   {
     "name": "benchmark-astro-v2",
     "registry": "npm",
-    "buildTime": 23050,
+    "buildDuration": 23050,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.966Z"
   },
   {
     "name": "benchmark-astro-v2",
     "registry": "vsr",
-    "buildTime": 180462,
+    "buildDuration": 180462,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:32.806Z"
   },
   {
     "name": "benchmark-astro-v3",
     "registry": "npm",
-    "buildTime": 22053,
+    "buildDuration": 22053,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.822Z"
   },
   {
     "name": "benchmark-astro-v3",
     "registry": "vsr",
-    "buildTime": 88276,
+    "buildDuration": 88276,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.701Z"
   },
   {
     "name": "benchmark-nextjs-v13-0",
     "registry": "npm",
-    "buildTime": 22507,
+    "buildDuration": 22507,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.937Z"
   },
   {
     "name": "benchmark-nextjs-v13-0",
     "registry": "vsr",
-    "buildTime": 352420,
+    "buildDuration": 352420,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:32.023Z"
   },
   {
     "name": "benchmark-parcel-v2",
     "registry": "npm",
-    "buildTime": 15704,
+    "buildDuration": 15704,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.731Z"
   },
   {
     "name": "benchmark-parcel-v2",
     "registry": "vsr",
-    "buildTime": 47115,
+    "buildDuration": 47115,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.739Z"
   },
   {
     "name": "benchmark-nextjs-v14-1",
     "registry": "npm",
-    "buildTime": 28737,
+    "buildDuration": 28737,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.943Z"
   },
   {
     "name": "benchmark-nextjs-v14-1",
     "registry": "vsr",
-    "buildTime": 473744,
+    "buildDuration": 473744,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.967Z"
   },
   {
     "name": "benchmark-svelte-v4",
     "registry": "npm",
-    "buildTime": 8397,
+    "buildDuration": 8397,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.792Z"
   },
   {
     "name": "benchmark-svelte-v4",
     "registry": "vsr",
-    "buildTime": 22502,
+    "buildDuration": 22502,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.824Z"
   },
   {
     "name": "benchmark-remix-v1",
     "registry": "npm",
-    "buildTime": 33785,
+    "buildDuration": 33785,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:32.007Z"
   },
   {
     "name": "benchmark-remix-v1",
     "registry": "vsr",
-    "buildTime": 423934,
+    "buildDuration": 423934,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.829Z"
   },
   {
     "name": "benchmark-ionic-angular-v8",
     "registry": "npm",
-    "buildTime": 49278,
+    "buildDuration": 49278,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.726Z"
   },
   {
     "name": "benchmark-ionic-angular-v8",
     "registry": "vsr",
-    "buildTime": 732397,
+    "buildDuration": 732397,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.909Z"
   },
   {
     "name": "benchmark-remix-vite-v2",
     "registry": "npm",
-    "buildTime": 40366,
+    "buildDuration": 40366,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.710Z"
   },
   {
     "name": "benchmark-remix-vite-v2",
     "registry": "vsr",
-    "buildTime": 194338,
+    "buildDuration": 194338,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:32.403Z"
   },
   {
     "name": "benchmark-ionic-angular-v7",
     "registry": "npm",
-    "buildTime": 52674,
+    "buildDuration": 52674,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.639Z"
   },
   {
     "name": "benchmark-ionic-angular-v7",
     "registry": "vsr",
-    "buildTime": 778873,
+    "buildDuration": 778873,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.841Z"
   },
   {
     "name": "benchmark-nextjs-v15-node-middleware",
     "registry": "npm",
-    "buildTime": 14079,
+    "buildDuration": 14079,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:32.034Z"
   },
   {
     "name": "benchmark-nextjs-v15-node-middleware",
     "registry": "vsr",
-    "buildTime": 69243,
+    "buildDuration": 69243,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:32.009Z"
   },
   {
     "name": "benchmark-ionic-react-v7",
     "registry": "npm",
-    "buildTime": 52838,
+    "buildDuration": 52838,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.902Z"
   },
   {
     "name": "benchmark-ionic-react-v7",
     "registry": "vsr",
-    "buildTime": 794161,
+    "buildDuration": 794161,
     "state": "ERROR",
     "createdTime": "2025-11-14T20:16:31.861Z"
   },
   {
     "name": "benchmark-nextjs-v15-7-many-tags",
     "registry": "npm",
-    "buildTime": 15963,
+    "buildDuration": 15963,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:32.321Z"
   },
   {
     "name": "benchmark-nextjs-v15-7-many-tags",
     "registry": "vsr",
-    "buildTime": 42349,
+    "buildDuration": 42349,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.747Z"
   },
   {
     "name": "benchmark-nextjs-v15-3-client-segment-cache",
     "registry": "npm",
-    "buildTime": 15841,
+    "buildDuration": 15841,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.910Z"
   },
   {
     "name": "benchmark-nextjs-v15-3-client-segment-cache",
     "registry": "vsr",
-    "buildTime": 71012,
+    "buildDuration": 71012,
     "state": "READY",
     "createdTime": "2025-11-14T20:16:31.976Z"
   }
