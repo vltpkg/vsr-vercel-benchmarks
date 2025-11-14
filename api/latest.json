@@ -1,786 +1,1234 @@
 [
   {
+    "id": "benchmark-angular-v16-npm",
     "name": "benchmark-angular-v16",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 43906,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.576Z"
+    "queueDuration": 1005,
+    "createdTime": "2025-11-14T20:16:31.576Z",
+    "buildStartTime": "2025-11-14T20:16:32.581Z",
+    "readyTime": "2025-11-14T20:17:16.487Z"
   },
   {
+    "id": "benchmark-angular-v16-vsr",
     "name": "benchmark-angular-v16",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 698813,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.785Z"
+    "queueDuration": 138574,
+    "createdTime": "2025-11-14T20:16:31.785Z",
+    "buildStartTime": "2025-11-14T20:18:50.359Z",
+    "readyTime": "2025-11-14T20:30:29.172Z"
   },
   {
+    "id": "benchmark-angular-v17-npm",
     "name": "benchmark-angular-v17",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 38620,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.903Z"
+    "queueDuration": 89520,
+    "createdTime": "2025-11-14T20:16:31.903Z",
+    "buildStartTime": "2025-11-14T20:18:01.423Z",
+    "readyTime": "2025-11-14T20:18:40.043Z"
   },
   {
+    "id": "benchmark-angular-v17-vsr",
     "name": "benchmark-angular-v17",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 770394,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.827Z"
+    "queueDuration": 154662,
+    "createdTime": "2025-11-14T20:16:31.827Z",
+    "buildStartTime": "2025-11-14T20:19:06.489Z",
+    "readyTime": "2025-11-14T20:31:56.883Z"
   },
   {
+    "id": "benchmark-angular-v18-npm",
     "name": "benchmark-angular-v18",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 42586,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.845Z"
+    "queueDuration": 80790,
+    "createdTime": "2025-11-14T20:16:31.845Z",
+    "buildStartTime": "2025-11-14T20:17:52.635Z",
+    "readyTime": "2025-11-14T20:18:35.221Z"
   },
   {
+    "id": "benchmark-angular-v18-vsr",
     "name": "benchmark-angular-v18",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 141585,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.754Z"
+    "queueDuration": 1240,
+    "createdTime": "2025-11-14T20:16:31.754Z",
+    "buildStartTime": "2025-11-14T20:16:32.994Z",
+    "readyTime": "2025-11-14T20:18:54.579Z"
   },
   {
+    "id": "benchmark-astro-v2-npm",
     "name": "benchmark-astro-v2",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 23050,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.966Z"
+    "queueDuration": 96842,
+    "createdTime": "2025-11-14T20:16:31.966Z",
+    "buildStartTime": "2025-11-14T20:18:08.808Z",
+    "readyTime": "2025-11-14T20:18:31.858Z"
   },
   {
+    "id": "benchmark-astro-v2-vsr",
     "name": "benchmark-astro-v2",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 180462,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:32.806Z"
+    "queueDuration": 793762,
+    "createdTime": "2025-11-14T20:16:32.806Z",
+    "buildStartTime": "2025-11-14T20:29:46.568Z",
+    "readyTime": "2025-11-14T20:32:47.030Z"
   },
   {
+    "id": "benchmark-astro-v3-npm",
     "name": "benchmark-astro-v3",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 22053,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.822Z"
+    "queueDuration": 79406,
+    "createdTime": "2025-11-14T20:16:31.822Z",
+    "buildStartTime": "2025-11-14T20:17:51.228Z",
+    "readyTime": "2025-11-14T20:18:13.281Z"
   },
   {
+    "id": "benchmark-astro-v3-vsr",
     "name": "benchmark-astro-v3",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 88276,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.701Z"
+    "queueDuration": 905,
+    "createdTime": "2025-11-14T20:16:31.701Z",
+    "buildStartTime": "2025-11-14T20:16:32.606Z",
+    "readyTime": "2025-11-14T20:18:00.882Z"
   },
   {
+    "id": "benchmark-astro-v4-npm",
     "name": "benchmark-astro-v4",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 19944,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.824Z"
+    "queueDuration": 1891,
+    "createdTime": "2025-11-14T20:16:31.824Z",
+    "buildStartTime": "2025-11-14T20:16:33.715Z",
+    "readyTime": "2025-11-14T20:16:53.659Z"
   },
   {
+    "id": "benchmark-astro-v4-vsr",
     "name": "benchmark-astro-v4",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 77819,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.796Z"
+    "queueDuration": 938,
+    "createdTime": "2025-11-14T20:16:31.796Z",
+    "buildStartTime": "2025-11-14T20:16:32.734Z",
+    "readyTime": "2025-11-14T20:17:50.553Z"
   },
   {
+    "id": "benchmark-blitz-v2-npm",
     "name": "benchmark-blitz-v2",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 61761,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.620Z"
+    "queueDuration": 17285,
+    "createdTime": "2025-11-14T20:16:31.620Z",
+    "buildStartTime": "2025-11-14T20:16:48.905Z",
+    "readyTime": "2025-11-14T20:17:50.666Z"
   },
   {
+    "id": "benchmark-blitz-v2-vsr",
     "name": "benchmark-blitz-v2",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 645294,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.975Z"
+    "queueDuration": 341465,
+    "createdTime": "2025-11-14T20:16:31.975Z",
+    "buildStartTime": "2025-11-14T20:22:13.440Z",
+    "readyTime": "2025-11-14T20:32:58.734Z"
   },
   {
+    "id": "benchmark-docusaurus-v1-npm",
     "name": "benchmark-docusaurus-v1",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 33018,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.870Z"
+    "queueDuration": 84236,
+    "createdTime": "2025-11-14T20:16:31.870Z",
+    "buildStartTime": "2025-11-14T20:17:56.106Z",
+    "readyTime": "2025-11-14T20:18:29.124Z"
   },
   {
+    "id": "benchmark-docusaurus-v1-vsr",
     "name": "benchmark-docusaurus-v1",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 615597,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.873Z"
+    "queueDuration": 174881,
+    "createdTime": "2025-11-14T20:16:31.873Z",
+    "buildStartTime": "2025-11-14T20:19:26.754Z",
+    "readyTime": "2025-11-14T20:29:42.351Z"
   },
   {
+    "id": "benchmark-docusaurus-v3-npm",
     "name": "benchmark-docusaurus-v3",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 51347,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.979Z"
+    "queueDuration": 96906,
+    "createdTime": "2025-11-14T20:16:31.979Z",
+    "buildStartTime": "2025-11-14T20:18:08.885Z",
+    "readyTime": "2025-11-14T20:19:00.232Z"
   },
   {
+    "id": "benchmark-docusaurus-v3-vsr",
     "name": "benchmark-docusaurus-v3",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 325428,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:32.393Z"
+    "queueDuration": 663943,
+    "createdTime": "2025-11-14T20:16:32.393Z",
+    "buildStartTime": "2025-11-14T20:27:36.336Z",
+    "readyTime": "2025-11-14T20:33:01.764Z"
   },
   {
+    "id": "benchmark-eleventy-v2-npm",
     "name": "benchmark-eleventy-v2",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 12594,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.727Z"
+    "queueDuration": 50637,
+    "createdTime": "2025-11-14T20:16:31.727Z",
+    "buildStartTime": "2025-11-14T20:17:22.364Z",
+    "readyTime": "2025-11-14T20:17:34.958Z"
   },
   {
+    "id": "benchmark-eleventy-v2-vsr",
     "name": "benchmark-eleventy-v2",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 61731,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.723Z"
+    "queueDuration": 911,
+    "createdTime": "2025-11-14T20:16:31.723Z",
+    "buildStartTime": "2025-11-14T20:16:32.634Z",
+    "readyTime": "2025-11-14T20:17:34.365Z"
   },
   {
+    "id": "benchmark-ember-v5-npm",
     "name": "benchmark-ember-v5",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 63542,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.902Z"
+    "queueDuration": 89046,
+    "createdTime": "2025-11-14T20:16:31.902Z",
+    "buildStartTime": "2025-11-14T20:18:00.948Z",
+    "readyTime": "2025-11-14T20:19:04.490Z"
   },
   {
+    "id": "benchmark-ember-v5-vsr",
     "name": "benchmark-ember-v5",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 741742,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.937Z"
+    "queueDuration": 246538,
+    "createdTime": "2025-11-14T20:16:31.937Z",
+    "buildStartTime": "2025-11-14T20:20:38.475Z",
+    "readyTime": "2025-11-14T20:33:00.217Z"
   },
   {
+    "id": "benchmark-express-v5-0-npm",
     "name": "benchmark-express-v5-0",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 9944,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.534Z"
+    "queueDuration": 1411,
+    "createdTime": "2025-11-14T20:16:31.534Z",
+    "buildStartTime": "2025-11-14T20:16:32.945Z",
+    "readyTime": "2025-11-14T20:16:42.889Z"
   },
   {
+    "id": "benchmark-express-v5-0-vsr",
     "name": "benchmark-express-v5-0",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 11597,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.725Z"
+    "queueDuration": 124028,
+    "createdTime": "2025-11-14T20:16:31.725Z",
+    "buildStartTime": "2025-11-14T20:18:35.753Z",
+    "readyTime": "2025-11-14T20:18:47.350Z"
   },
   {
+    "id": "benchmark-gatsby-v4-npm",
     "name": "benchmark-gatsby-v4",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 65054,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.839Z"
+    "queueDuration": 80499,
+    "createdTime": "2025-11-14T20:16:31.839Z",
+    "buildStartTime": "2025-11-14T20:17:52.338Z",
+    "readyTime": "2025-11-14T20:18:57.392Z"
   },
   {
+    "id": "benchmark-gatsby-v4-vsr",
     "name": "benchmark-gatsby-v4",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 827512,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.789Z"
+    "queueDuration": 141216,
+    "createdTime": "2025-11-14T20:16:31.789Z",
+    "buildStartTime": "2025-11-14T20:18:53.005Z",
+    "readyTime": "2025-11-14T20:32:40.517Z"
   },
   {
+    "id": "benchmark-gatsby-v5-npm",
     "name": "benchmark-gatsby-v5",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 65566,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:32.415Z"
+    "queueDuration": 115116,
+    "createdTime": "2025-11-14T20:16:32.415Z",
+    "buildStartTime": "2025-11-14T20:18:27.531Z",
+    "readyTime": "2025-11-14T20:19:33.097Z"
   },
   {
+    "id": "benchmark-gatsby-v5-vsr",
     "name": "benchmark-gatsby-v5",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 204469,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:32.715Z"
+    "queueDuration": 790229,
+    "createdTime": "2025-11-14T20:16:32.715Z",
+    "buildStartTime": "2025-11-14T20:29:42.944Z",
+    "readyTime": "2025-11-14T20:33:07.413Z"
   },
   {
+    "id": "benchmark-gridsome-v0-npm",
     "name": "benchmark-gridsome-v0",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 59384,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.334Z"
+    "queueDuration": 975,
+    "createdTime": "2025-11-14T20:16:31.334Z",
+    "buildStartTime": "2025-11-14T20:16:32.309Z",
+    "readyTime": "2025-11-14T20:17:31.693Z"
   },
   {
+    "id": "benchmark-gridsome-v0-vsr",
     "name": "benchmark-gridsome-v0",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 745029,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.906Z"
+    "queueDuration": 206283,
+    "createdTime": "2025-11-14T20:16:31.906Z",
+    "buildStartTime": "2025-11-14T20:19:58.189Z",
+    "readyTime": "2025-11-14T20:32:23.218Z"
   },
   {
+    "id": "benchmark-hexo-v6-npm",
     "name": "benchmark-hexo-v6",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 13018,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.815Z"
+    "queueDuration": 79227,
+    "createdTime": "2025-11-14T20:16:31.815Z",
+    "buildStartTime": "2025-11-14T20:17:51.042Z",
+    "readyTime": "2025-11-14T20:18:04.060Z"
   },
   {
+    "id": "benchmark-hexo-v6-vsr",
     "name": "benchmark-hexo-v6",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 118259,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.919Z"
+    "queueDuration": 222604,
+    "createdTime": "2025-11-14T20:16:31.919Z",
+    "buildStartTime": "2025-11-14T20:20:14.523Z",
+    "readyTime": "2025-11-14T20:22:12.782Z"
   },
   {
+    "id": "benchmark-hono-v4-npm",
     "name": "benchmark-hono-v4",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 18963,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.743Z"
+    "queueDuration": 53548,
+    "createdTime": "2025-11-14T20:16:31.743Z",
+    "buildStartTime": "2025-11-14T20:17:25.291Z",
+    "readyTime": "2025-11-14T20:17:44.254Z"
   },
   {
+    "id": "benchmark-hono-v4-vsr",
     "name": "benchmark-hono-v4",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 182937,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.836Z"
+    "queueDuration": 155639,
+    "createdTime": "2025-11-14T20:16:31.836Z",
+    "buildStartTime": "2025-11-14T20:19:07.475Z",
+    "readyTime": "2025-11-14T20:22:10.412Z"
   },
   {
+    "id": "benchmark-hydrogen-v2023-npm",
     "name": "benchmark-hydrogen-v2023",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 68730,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.888Z"
+    "queueDuration": 86283,
+    "createdTime": "2025-11-14T20:16:31.888Z",
+    "buildStartTime": "2025-11-14T20:17:58.171Z",
+    "readyTime": "2025-11-14T20:19:06.901Z"
   },
   {
+    "id": "benchmark-hydrogen-v2023-vsr",
     "name": "benchmark-hydrogen-v2023",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 774437,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.927Z"
+    "queueDuration": 227278,
+    "createdTime": "2025-11-14T20:16:31.927Z",
+    "buildStartTime": "2025-11-14T20:20:19.205Z",
+    "readyTime": "2025-11-14T20:33:13.642Z"
   },
   {
+    "id": "benchmark-ionic-angular-v7-npm",
     "name": "benchmark-ionic-angular-v7",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 52674,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.639Z"
+    "queueDuration": 852,
+    "createdTime": "2025-11-14T20:16:31.639Z",
+    "buildStartTime": "2025-11-14T20:16:32.491Z",
+    "readyTime": "2025-11-14T20:17:25.165Z"
   },
   {
+    "id": "benchmark-ionic-angular-v7-vsr",
     "name": "benchmark-ionic-angular-v7",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 778873,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.841Z"
+    "queueDuration": 172134,
+    "createdTime": "2025-11-14T20:16:31.841Z",
+    "buildStartTime": "2025-11-14T20:19:23.975Z",
+    "readyTime": "2025-11-14T20:32:22.848Z"
   },
   {
+    "id": "benchmark-ionic-angular-v8-npm",
     "name": "benchmark-ionic-angular-v8",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 49278,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.726Z"
+    "queueDuration": 837,
+    "createdTime": "2025-11-14T20:16:31.726Z",
+    "buildStartTime": "2025-11-14T20:16:32.563Z",
+    "readyTime": "2025-11-14T20:17:21.841Z"
   },
   {
+    "id": "benchmark-ionic-angular-v8-vsr",
     "name": "benchmark-ionic-angular-v8",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 732397,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.909Z"
+    "queueDuration": 217672,
+    "createdTime": "2025-11-14T20:16:31.909Z",
+    "buildStartTime": "2025-11-14T20:20:09.581Z",
+    "readyTime": "2025-11-14T20:32:21.978Z"
   },
   {
+    "id": "benchmark-ionic-react-v7-npm",
     "name": "benchmark-ionic-react-v7",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 52838,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.902Z"
+    "queueDuration": 87562,
+    "createdTime": "2025-11-14T20:16:31.902Z",
+    "buildStartTime": "2025-11-14T20:17:59.464Z",
+    "readyTime": "2025-11-14T20:18:52.302Z"
   },
   {
+    "id": "benchmark-ionic-react-v7-vsr",
     "name": "benchmark-ionic-react-v7",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 794161,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.861Z"
+    "queueDuration": 173406,
+    "createdTime": "2025-11-14T20:16:31.861Z",
+    "buildStartTime": "2025-11-14T20:19:25.267Z",
+    "readyTime": "2025-11-14T20:32:39.428Z"
   },
   {
+    "id": "benchmark-nextjs-v12-0-npm",
     "name": "benchmark-nextjs-v12-0",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 10356,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.779Z"
+    "queueDuration": 64050,
+    "createdTime": "2025-11-14T20:16:31.779Z",
+    "buildStartTime": "2025-11-14T20:17:35.829Z",
+    "readyTime": "2025-11-14T20:17:46.185Z"
   },
   {
+    "id": "benchmark-nextjs-v12-0-vsr",
     "name": "benchmark-nextjs-v12-0",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 91377,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.934Z"
+    "queueDuration": 244492,
+    "createdTime": "2025-11-14T20:16:31.934Z",
+    "buildStartTime": "2025-11-14T20:20:36.426Z",
+    "readyTime": "2025-11-14T20:22:07.803Z"
   },
   {
+    "id": "benchmark-nextjs-v12-1-npm",
     "name": "benchmark-nextjs-v12-1",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 9794,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.993Z"
+    "queueDuration": 98504,
+    "createdTime": "2025-11-14T20:16:31.993Z",
+    "buildStartTime": "2025-11-14T20:18:10.497Z",
+    "readyTime": "2025-11-14T20:18:20.291Z"
   },
   {
+    "id": "benchmark-nextjs-v12-1-vsr",
     "name": "benchmark-nextjs-v12-1",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 53354,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.859Z"
+    "queueDuration": 173364,
+    "createdTime": "2025-11-14T20:16:31.859Z",
+    "buildStartTime": "2025-11-14T20:19:25.223Z",
+    "readyTime": "2025-11-14T20:20:18.577Z"
   },
   {
+    "id": "benchmark-nextjs-v12-2-npm",
     "name": "benchmark-nextjs-v12-2",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 10626,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.679Z"
+    "queueDuration": 1111,
+    "createdTime": "2025-11-14T20:16:31.679Z",
+    "buildStartTime": "2025-11-14T20:16:32.790Z",
+    "readyTime": "2025-11-14T20:16:43.416Z"
   },
   {
+    "id": "benchmark-nextjs-v12-2-vsr",
     "name": "benchmark-nextjs-v12-2",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 60933,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.992Z"
+    "queueDuration": 490118,
+    "createdTime": "2025-11-14T20:16:31.992Z",
+    "buildStartTime": "2025-11-14T20:24:42.110Z",
+    "readyTime": "2025-11-14T20:25:43.043Z"
   },
   {
+    "id": "benchmark-nextjs-v12-3-npm",
     "name": "benchmark-nextjs-v12-3",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 10532,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.806Z"
+    "queueDuration": 78395,
+    "createdTime": "2025-11-14T20:16:31.806Z",
+    "buildStartTime": "2025-11-14T20:17:50.201Z",
+    "readyTime": "2025-11-14T20:18:00.733Z"
   },
   {
+    "id": "benchmark-nextjs-v12-3-vsr",
     "name": "benchmark-nextjs-v12-3",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 20106,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.555Z"
+    "queueDuration": 118138,
+    "createdTime": "2025-11-14T20:16:31.555Z",
+    "buildStartTime": "2025-11-14T20:18:29.693Z",
+    "readyTime": "2025-11-14T20:18:49.799Z"
   },
   {
+    "id": "benchmark-nextjs-v13-0-npm",
     "name": "benchmark-nextjs-v13-0",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 22507,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.937Z"
+    "queueDuration": 92589,
+    "createdTime": "2025-11-14T20:16:31.937Z",
+    "buildStartTime": "2025-11-14T20:18:04.526Z",
+    "readyTime": "2025-11-14T20:18:27.033Z"
   },
   {
+    "id": "benchmark-nextjs-v13-0-vsr",
     "name": "benchmark-nextjs-v13-0",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 352420,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:32.023Z"
+    "queueDuration": 551589,
+    "createdTime": "2025-11-14T20:16:32.023Z",
+    "buildStartTime": "2025-11-14T20:25:43.612Z",
+    "readyTime": "2025-11-14T20:31:36.032Z"
   },
   {
+    "id": "benchmark-nextjs-v13-1-npm",
     "name": "benchmark-nextjs-v13-1",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 23394,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.749Z"
+    "queueDuration": 56655,
+    "createdTime": "2025-11-14T20:16:31.749Z",
+    "buildStartTime": "2025-11-14T20:17:28.404Z",
+    "readyTime": "2025-11-14T20:17:51.798Z"
   },
   {
+    "id": "benchmark-nextjs-v13-1-vsr",
     "name": "benchmark-nextjs-v13-1",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 314904,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.861Z"
+    "queueDuration": 174644,
+    "createdTime": "2025-11-14T20:16:31.861Z",
+    "buildStartTime": "2025-11-14T20:19:26.505Z",
+    "readyTime": "2025-11-14T20:24:41.409Z"
   },
   {
+    "id": "benchmark-nextjs-v13-2-npm",
     "name": "benchmark-nextjs-v13-2",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 22723,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.755Z"
+    "queueDuration": 62986,
+    "createdTime": "2025-11-14T20:16:31.755Z",
+    "buildStartTime": "2025-11-14T20:17:34.741Z",
+    "readyTime": "2025-11-14T20:17:57.464Z"
   },
   {
+    "id": "benchmark-nextjs-v13-2-vsr",
     "name": "benchmark-nextjs-v13-2",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 115714,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.743Z"
+    "queueDuration": 128319,
+    "createdTime": "2025-11-14T20:16:31.743Z",
+    "buildStartTime": "2025-11-14T20:18:40.062Z",
+    "readyTime": "2025-11-14T20:20:35.776Z"
   },
   {
+    "id": "benchmark-nextjs-v13-3-npm",
     "name": "benchmark-nextjs-v13-3",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 21965,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.648Z"
+    "queueDuration": 825,
+    "createdTime": "2025-11-14T20:16:31.648Z",
+    "buildStartTime": "2025-11-14T20:16:32.473Z",
+    "readyTime": "2025-11-14T20:16:54.438Z"
   },
   {
+    "id": "benchmark-nextjs-v13-3-vsr",
     "name": "benchmark-nextjs-v13-3",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 84434,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.564Z"
+    "queueDuration": 121289,
+    "createdTime": "2025-11-14T20:16:31.564Z",
+    "buildStartTime": "2025-11-14T20:18:32.853Z",
+    "readyTime": "2025-11-14T20:19:57.287Z"
   },
   {
+    "id": "benchmark-nextjs-v13-4-npm",
     "name": "benchmark-nextjs-v13-4",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 28055,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.754Z"
+    "queueDuration": 60465,
+    "createdTime": "2025-11-14T20:16:31.754Z",
+    "buildStartTime": "2025-11-14T20:17:32.219Z",
+    "readyTime": "2025-11-14T20:18:00.274Z"
   },
   {
+    "id": "benchmark-nextjs-v13-4-vsr",
     "name": "benchmark-nextjs-v13-4",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 371909,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:32.058Z"
+    "queueDuration": 578065,
+    "createdTime": "2025-11-14T20:16:32.058Z",
+    "buildStartTime": "2025-11-14T20:26:10.123Z",
+    "readyTime": "2025-11-14T20:32:22.032Z"
   },
   {
+    "id": "benchmark-nextjs-v13-5-npm",
     "name": "benchmark-nextjs-v13-5",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 26248,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.789Z"
+    "queueDuration": 65128,
+    "createdTime": "2025-11-14T20:16:31.789Z",
+    "buildStartTime": "2025-11-14T20:17:36.917Z",
+    "readyTime": "2025-11-14T20:18:03.165Z"
   },
   {
+    "id": "benchmark-nextjs-v13-5-vsr",
     "name": "benchmark-nextjs-v13-5",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 75792,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.759Z"
+    "queueDuration": 1056,
+    "createdTime": "2025-11-14T20:16:31.759Z",
+    "buildStartTime": "2025-11-14T20:16:32.815Z",
+    "readyTime": "2025-11-14T20:17:48.607Z"
   },
   {
+    "id": "benchmark-nextjs-v14-0-npm",
     "name": "benchmark-nextjs-v14-0",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 28221,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.703Z"
+    "queueDuration": 34284,
+    "createdTime": "2025-11-14T20:16:31.703Z",
+    "buildStartTime": "2025-11-14T20:17:05.987Z",
+    "readyTime": "2025-11-14T20:17:34.208Z"
   },
   {
+    "id": "benchmark-nextjs-v14-0-vsr",
     "name": "benchmark-nextjs-v14-0",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 101548,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.560Z"
+    "queueDuration": 120906,
+    "createdTime": "2025-11-14T20:16:31.560Z",
+    "buildStartTime": "2025-11-14T20:18:32.466Z",
+    "readyTime": "2025-11-14T20:20:14.014Z"
   },
   {
+    "id": "benchmark-nextjs-v14-1-npm",
     "name": "benchmark-nextjs-v14-1",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 28737,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.943Z"
+    "queueDuration": 92703,
+    "createdTime": "2025-11-14T20:16:31.943Z",
+    "buildStartTime": "2025-11-14T20:18:04.646Z",
+    "readyTime": "2025-11-14T20:18:33.383Z"
   },
   {
+    "id": "benchmark-nextjs-v14-1-vsr",
     "name": "benchmark-nextjs-v14-1",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 473744,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.967Z"
+    "queueDuration": 338991,
+    "createdTime": "2025-11-14T20:16:31.967Z",
+    "buildStartTime": "2025-11-14T20:22:10.958Z",
+    "readyTime": "2025-11-14T20:30:04.702Z"
   },
   {
+    "id": "benchmark-nextjs-v14-2-npm",
     "name": "benchmark-nextjs-v14-2",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 29062,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:32.350Z"
+    "queueDuration": 113696,
+    "createdTime": "2025-11-14T20:16:32.350Z",
+    "buildStartTime": "2025-11-14T20:18:26.046Z",
+    "readyTime": "2025-11-14T20:18:55.108Z"
   },
   {
+    "id": "benchmark-nextjs-v14-2-vsr",
     "name": "benchmark-nextjs-v14-2",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 77040,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.662Z"
+    "queueDuration": 814,
+    "createdTime": "2025-11-14T20:16:31.662Z",
+    "buildStartTime": "2025-11-14T20:16:32.476Z",
+    "readyTime": "2025-11-14T20:17:49.516Z"
   },
   {
+    "id": "benchmark-nextjs-v15-3-client-segment-cache-npm",
     "name": "benchmark-nextjs-v15-3-client-segment-cache",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 15841,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.910Z"
+    "queueDuration": 89645,
+    "createdTime": "2025-11-14T20:16:31.910Z",
+    "buildStartTime": "2025-11-14T20:18:01.555Z",
+    "readyTime": "2025-11-14T20:18:17.396Z"
   },
   {
+    "id": "benchmark-nextjs-v15-3-client-segment-cache-vsr",
     "name": "benchmark-nextjs-v15-3-client-segment-cache",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 71012,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.976Z"
+    "queueDuration": 479352,
+    "createdTime": "2025-11-14T20:16:31.976Z",
+    "buildStartTime": "2025-11-14T20:24:31.328Z",
+    "readyTime": "2025-11-14T20:25:42.340Z"
   },
   {
+    "id": "benchmark-nextjs-v15-3-npm",
     "name": "benchmark-nextjs-v15-3",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 17423,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:32.069Z"
+    "queueDuration": 108802,
+    "createdTime": "2025-11-14T20:16:32.069Z",
+    "buildStartTime": "2025-11-14T20:18:20.871Z",
+    "readyTime": "2025-11-14T20:18:38.294Z"
   },
   {
+    "id": "benchmark-nextjs-v15-3-vsr",
     "name": "benchmark-nextjs-v15-3",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 73377,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.813Z"
+    "queueDuration": 143836,
+    "createdTime": "2025-11-14T20:16:31.813Z",
+    "buildStartTime": "2025-11-14T20:18:55.649Z",
+    "readyTime": "2025-11-14T20:20:09.026Z"
   },
   {
+    "id": "benchmark-nextjs-v15-7-many-tags-npm",
     "name": "benchmark-nextjs-v15-7-many-tags",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 15963,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:32.321Z"
+    "queueDuration": 113632,
+    "createdTime": "2025-11-14T20:16:32.321Z",
+    "buildStartTime": "2025-11-14T20:18:25.953Z",
+    "readyTime": "2025-11-14T20:18:41.916Z"
   },
   {
+    "id": "benchmark-nextjs-v15-7-many-tags-vsr",
     "name": "benchmark-nextjs-v15-7-many-tags",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 42349,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.747Z"
+    "queueDuration": 128844,
+    "createdTime": "2025-11-14T20:16:31.747Z",
+    "buildStartTime": "2025-11-14T20:18:40.591Z",
+    "readyTime": "2025-11-14T20:19:22.940Z"
   },
   {
+    "id": "benchmark-nextjs-v15-node-middleware-npm",
     "name": "benchmark-nextjs-v15-node-middleware",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 14079,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:32.034Z"
+    "queueDuration": 106020,
+    "createdTime": "2025-11-14T20:16:32.034Z",
+    "buildStartTime": "2025-11-14T20:18:18.054Z",
+    "readyTime": "2025-11-14T20:18:32.133Z"
   },
   {
+    "id": "benchmark-nextjs-v15-node-middleware-vsr",
     "name": "benchmark-nextjs-v15-node-middleware",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 69243,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:32.009Z"
+    "queueDuration": 550842,
+    "createdTime": "2025-11-14T20:16:32.009Z",
+    "buildStartTime": "2025-11-14T20:25:42.851Z",
+    "readyTime": "2025-11-14T20:26:52.094Z"
   },
   {
+    "id": "benchmark-nextjs-v9-npm",
     "name": "benchmark-nextjs-v9",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 29607,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.691Z"
+    "queueDuration": 23406,
+    "createdTime": "2025-11-14T20:16:31.691Z",
+    "buildStartTime": "2025-11-14T20:16:55.097Z",
+    "readyTime": "2025-11-14T20:17:24.704Z"
   },
   {
+    "id": "benchmark-nextjs-v9-vsr",
     "name": "benchmark-nextjs-v9",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 112569,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.535Z"
+    "queueDuration": 865,
+    "createdTime": "2025-11-14T20:16:31.535Z",
+    "buildStartTime": "2025-11-14T20:16:32.400Z",
+    "readyTime": "2025-11-14T20:18:24.969Z"
   },
   {
+    "id": "benchmark-nitro-v2-npm",
     "name": "benchmark-nitro-v2",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 33600,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.662Z"
+    "queueDuration": 22614,
+    "createdTime": "2025-11-14T20:16:31.662Z",
+    "buildStartTime": "2025-11-14T20:16:54.276Z",
+    "readyTime": "2025-11-14T20:17:27.876Z"
   },
   {
+    "id": "benchmark-nitro-v2-vsr",
     "name": "benchmark-nitro-v2",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 356783,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.712Z"
+    "queueDuration": 122230,
+    "createdTime": "2025-11-14T20:16:31.712Z",
+    "buildStartTime": "2025-11-14T20:18:33.942Z",
+    "readyTime": "2025-11-14T20:24:30.725Z"
   },
   {
+    "id": "benchmark-nuxt-v3-npm",
     "name": "benchmark-nuxt-v3",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 51234,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.717Z"
+    "queueDuration": 45360,
+    "createdTime": "2025-11-14T20:16:31.717Z",
+    "buildStartTime": "2025-11-14T20:17:17.077Z",
+    "readyTime": "2025-11-14T20:18:08.311Z"
   },
   {
+    "id": "benchmark-nuxt-v3-vsr",
     "name": "benchmark-nuxt-v3",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 634940,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.939Z"
+    "queueDuration": 336885,
+    "createdTime": "2025-11-14T20:16:31.939Z",
+    "buildStartTime": "2025-11-14T20:22:08.824Z",
+    "readyTime": "2025-11-14T20:32:43.764Z"
   },
   {
+    "id": "benchmark-parcel-v2-npm",
     "name": "benchmark-parcel-v2",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 15704,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.731Z"
+    "queueDuration": 858,
+    "createdTime": "2025-11-14T20:16:31.731Z",
+    "buildStartTime": "2025-11-14T20:16:32.589Z",
+    "readyTime": "2025-11-14T20:16:48.293Z"
   },
   {
+    "id": "benchmark-parcel-v2-vsr",
     "name": "benchmark-parcel-v2",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 47115,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.739Z"
+    "queueDuration": 127375,
+    "createdTime": "2025-11-14T20:16:31.739Z",
+    "buildStartTime": "2025-11-14T20:18:39.114Z",
+    "readyTime": "2025-11-14T20:19:26.229Z"
   },
   {
+    "id": "benchmark-polymer-v3-npm",
     "name": "benchmark-polymer-v3",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 36156,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.800Z"
+    "queueDuration": 77485,
+    "createdTime": "2025-11-14T20:16:31.800Z",
+    "buildStartTime": "2025-11-14T20:17:49.285Z",
+    "readyTime": "2025-11-14T20:18:25.441Z"
   },
   {
+    "id": "benchmark-polymer-v3-vsr",
     "name": "benchmark-polymer-v3",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 97383,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.581Z"
+    "queueDuration": 1018,
+    "createdTime": "2025-11-14T20:16:31.581Z",
+    "buildStartTime": "2025-11-14T20:16:32.599Z",
+    "readyTime": "2025-11-14T20:18:09.982Z"
   },
   {
+    "id": "benchmark-preact-v10-npm",
     "name": "benchmark-preact-v10",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 52882,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.585Z"
+    "queueDuration": 11928,
+    "createdTime": "2025-11-14T20:16:31.585Z",
+    "buildStartTime": "2025-11-14T20:16:43.513Z",
+    "readyTime": "2025-11-14T20:17:36.395Z"
   },
   {
+    "id": "benchmark-preact-v10-vsr",
     "name": "benchmark-preact-v10",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 126871,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.680Z"
+    "queueDuration": 958,
+    "createdTime": "2025-11-14T20:16:31.680Z",
+    "buildStartTime": "2025-11-14T20:16:32.638Z",
+    "readyTime": "2025-11-14T20:18:39.509Z"
   },
   {
+    "id": "benchmark-remix-v1-npm",
     "name": "benchmark-remix-v1",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 33785,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:32.007Z"
+    "queueDuration": 101786,
+    "createdTime": "2025-11-14T20:16:32.007Z",
+    "buildStartTime": "2025-11-14T20:18:13.793Z",
+    "readyTime": "2025-11-14T20:18:47.578Z"
   },
   {
+    "id": "benchmark-remix-v1-vsr",
     "name": "benchmark-remix-v1",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 423934,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.829Z"
+    "queueDuration": 153833,
+    "createdTime": "2025-11-14T20:16:31.829Z",
+    "buildStartTime": "2025-11-14T20:19:05.662Z",
+    "readyTime": "2025-11-14T20:26:09.596Z"
   },
   {
+    "id": "benchmark-remix-v2-npm",
     "name": "benchmark-remix-v2",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 32541,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.840Z"
+    "queueDuration": 1043,
+    "createdTime": "2025-11-14T20:16:31.840Z",
+    "buildStartTime": "2025-11-14T20:16:32.883Z",
+    "readyTime": "2025-11-14T20:17:05.424Z"
   },
   {
+    "id": "benchmark-remix-v2-vsr",
     "name": "benchmark-remix-v2",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 611159,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.876Z"
+    "queueDuration": 181770,
+    "createdTime": "2025-11-14T20:16:31.876Z",
+    "buildStartTime": "2025-11-14T20:19:33.646Z",
+    "readyTime": "2025-11-14T20:29:44.805Z"
   },
   {
+    "id": "benchmark-remix-vite-v2-npm",
     "name": "benchmark-remix-vite-v2",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 40366,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.710Z"
+    "queueDuration": 39965,
+    "createdTime": "2025-11-14T20:16:31.710Z",
+    "buildStartTime": "2025-11-14T20:17:11.675Z",
+    "readyTime": "2025-11-14T20:17:52.041Z"
   },
   {
+    "id": "benchmark-remix-vite-v2-vsr",
     "name": "benchmark-remix-vite-v2",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 194338,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:32.403Z"
+    "queueDuration": 789914,
+    "createdTime": "2025-11-14T20:16:32.403Z",
+    "buildStartTime": "2025-11-14T20:29:42.317Z",
+    "readyTime": "2025-11-14T20:32:56.655Z"
   },
   {
+    "id": "benchmark-stencil-v4-npm",
     "name": "benchmark-stencil-v4",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 634309,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.702Z"
+    "queueDuration": 29785,
+    "createdTime": "2025-11-14T20:16:31.702Z",
+    "buildStartTime": "2025-11-14T20:17:01.487Z",
+    "readyTime": "2025-11-14T20:27:35.796Z"
   },
   {
+    "id": "benchmark-stencil-v4-vsr",
     "name": "benchmark-stencil-v4",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 950271,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.815Z"
+    "queueDuration": 146219,
+    "createdTime": "2025-11-14T20:16:31.815Z",
+    "buildStartTime": "2025-11-14T20:18:58.034Z",
+    "readyTime": "2025-11-14T20:34:48.305Z"
   },
   {
+    "id": "benchmark-storybook-v7-npm",
     "name": "benchmark-storybook-v7",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 58997,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.964Z"
+    "queueDuration": 93672,
+    "createdTime": "2025-11-14T20:16:31.964Z",
+    "buildStartTime": "2025-11-14T20:18:05.636Z",
+    "readyTime": "2025-11-14T20:19:04.633Z"
   },
   {
+    "id": "benchmark-storybook-v7-vsr",
     "name": "benchmark-storybook-v7",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 424158,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:32.040Z"
+    "queueDuration": 564270,
+    "createdTime": "2025-11-14T20:16:32.040Z",
+    "buildStartTime": "2025-11-14T20:25:56.310Z",
+    "readyTime": "2025-11-14T20:33:00.468Z"
   },
   {
+    "id": "benchmark-svelte-v3-npm",
     "name": "benchmark-svelte-v3",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 10502,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.792Z"
+    "queueDuration": 73252,
+    "createdTime": "2025-11-14T20:16:31.792Z",
+    "buildStartTime": "2025-11-14T20:17:45.044Z",
+    "readyTime": "2025-11-14T20:17:55.546Z"
   },
   {
+    "id": "benchmark-svelte-v3-vsr",
     "name": "benchmark-svelte-v3",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 38390,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.867Z"
+    "queueDuration": 881,
+    "createdTime": "2025-11-14T20:16:31.867Z",
+    "buildStartTime": "2025-11-14T20:16:32.748Z",
+    "readyTime": "2025-11-14T20:17:11.138Z"
   },
   {
+    "id": "benchmark-svelte-v4-npm",
     "name": "benchmark-svelte-v4",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 8397,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.792Z"
+    "queueDuration": 73040,
+    "createdTime": "2025-11-14T20:16:31.792Z",
+    "buildStartTime": "2025-11-14T20:17:44.832Z",
+    "readyTime": "2025-11-14T20:17:53.229Z"
   },
   {
+    "id": "benchmark-svelte-v4-vsr",
     "name": "benchmark-svelte-v4",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 22502,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.824Z"
+    "queueDuration": 148980,
+    "createdTime": "2025-11-14T20:16:31.824Z",
+    "buildStartTime": "2025-11-14T20:19:00.804Z",
+    "readyTime": "2025-11-14T20:19:23.306Z"
   },
   {
+    "id": "benchmark-vite-v4-npm",
     "name": "benchmark-vite-v4",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 9579,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.762Z"
+    "queueDuration": 63155,
+    "createdTime": "2025-11-14T20:16:31.762Z",
+    "buildStartTime": "2025-11-14T20:17:34.917Z",
+    "readyTime": "2025-11-14T20:17:44.496Z"
   },
   {
+    "id": "benchmark-vite-v4-vsr",
     "name": "benchmark-vite-v4",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 169093,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:32.116Z"
+    "queueDuration": 620527,
+    "createdTime": "2025-11-14T20:16:32.116Z",
+    "buildStartTime": "2025-11-14T20:26:52.643Z",
+    "readyTime": "2025-11-14T20:29:41.736Z"
   },
   {
+    "id": "benchmark-vite-v5-npm",
     "name": "benchmark-vite-v5",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 10798,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.863Z"
+    "queueDuration": 82396,
+    "createdTime": "2025-11-14T20:16:31.863Z",
+    "buildStartTime": "2025-11-14T20:17:54.259Z",
+    "readyTime": "2025-11-14T20:18:05.057Z"
   },
   {
+    "id": "benchmark-vite-v5-vsr",
     "name": "benchmark-vite-v5",
     "registry": "vsr",
+    "state": "READY",
     "buildDuration": 29547,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.792Z"
+    "queueDuration": 143324,
+    "createdTime": "2025-11-14T20:16:31.792Z",
+    "buildStartTime": "2025-11-14T20:18:55.116Z",
+    "readyTime": "2025-11-14T20:19:24.663Z"
   },
   {
+    "id": "benchmark-vitepress-v1-npm",
     "name": "benchmark-vitepress-v1",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 16667,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.590Z"
+    "queueDuration": 12362,
+    "createdTime": "2025-11-14T20:16:31.590Z",
+    "buildStartTime": "2025-11-14T20:16:43.952Z",
+    "readyTime": "2025-11-14T20:17:00.619Z"
   },
   {
+    "id": "benchmark-vitepress-v1-vsr",
     "name": "benchmark-vitepress-v1",
     "registry": "vsr",
+    "state": "ERROR",
     "buildDuration": 115417,
-    "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.769Z"
+    "queueDuration": 130748,
+    "createdTime": "2025-11-14T20:16:31.769Z",
+    "buildStartTime": "2025-11-14T20:18:42.517Z",
+    "readyTime": "2025-11-14T20:20:37.934Z"
   },
   {
+    "id": "benchmark-vue-v3-npm",
     "name": "benchmark-vue-v3",
     "registry": "npm",
+    "state": "READY",
     "buildDuration": 10992,
-    "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.798Z"
+    "queueDuration": 74991,
+    "createdTime": "2025-11-14T20:16:31.798Z",
+    "buildStartTime": "2025-11-14T20:17:46.789Z",
+    "readyTime": "2025-11-14T20:17:57.781Z"
   },
   {
+    "id": "benchmark-vue-v3-vsr",
     "name": "benchmark-vue-v3",
     "registry": "vsr",
-    "buildDuration": 37831,
     "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.778Z"
+    "buildDuration": 37831,
+    "queueDuration": 136248,
+    "createdTime": "2025-11-14T20:16:31.778Z",
+    "buildStartTime": "2025-11-14T20:18:48.026Z",
+    "readyTime": "2025-11-14T20:19:25.857Z"
   },
   {
+    "id": "benchmark-vuepress-v1-npm",
     "name": "benchmark-vuepress-v1",
     "registry": "npm",
-    "buildDuration": 42593,
     "state": "READY",
-    "createdTime": "2025-11-14T20:16:31.748Z"
+    "buildDuration": 42593,
+    "queueDuration": 53935,
+    "createdTime": "2025-11-14T20:16:31.748Z",
+    "buildStartTime": "2025-11-14T20:17:25.683Z",
+    "readyTime": "2025-11-14T20:18:08.276Z"
   },
   {
+    "id": "benchmark-vuepress-v1-vsr",
     "name": "benchmark-vuepress-v1",
     "registry": "vsr",
-    "buildDuration": 427667,
     "state": "ERROR",
-    "createdTime": "2025-11-14T20:16:31.780Z"
+    "buildDuration": 427667,
+    "queueDuration": 136319,
+    "createdTime": "2025-11-14T20:16:31.780Z",
+    "buildStartTime": "2025-11-14T20:18:48.099Z",
+    "readyTime": "2025-11-14T20:25:55.766Z"
   }
 ]
