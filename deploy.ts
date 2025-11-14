@@ -7,10 +7,11 @@ const args = parseArgs({
     full: { type: 'boolean' },
     limit: { type: 'string' },
     filter: { type: 'string', multiple: true },
+    registry: { type: 'string', multiple: true },
   },
 })
 
-const { full, limit, filter = [] } = args.values
+const { full, limit, filter = [], registry = [] } = args.values
 
 if (full) {
   url.searchParams.set('full', 'true')
@@ -23,8 +24,15 @@ if (filter.length > 0) {
     url.searchParams.append('filter', f)
   }
 }
+if (registry.length > 0) {
+  for (const r of registry) {
+    url.searchParams.append('registry', r)
+  }
+}
 
 console.log(url.toString())
+
+await new Promise((resolve) => setTimeout(resolve, 1000))
 
 const response = await fetch(url, {
   method: 'POST',

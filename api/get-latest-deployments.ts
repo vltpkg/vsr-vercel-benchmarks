@@ -15,6 +15,7 @@ export async function GET(request: Request) {
   const logs = url.searchParams.get('logs') === 'true'
   const limit = url.searchParams.get('limit') ?? '100'
   const filters = url.searchParams.getAll('filter')
+  const filterRegistries = url.searchParams.getAll('registry') ?? []
 
   const deployments = []
 
@@ -22,6 +23,14 @@ export async function GET(request: Request) {
 
   if (!projects.length) {
     return errorResponse('No projects found')
+  }
+
+  const actualRegistries = filterRegistries.length
+    ? registries.filter((registry) => filterRegistries.includes(registry))
+    : registries
+
+  if (!actualRegistries.length) {
+    return errorResponse('No registries found')
   }
 
   for (const project of projects) {
@@ -47,7 +56,6 @@ export async function GET(request: Request) {
         name: string
         registry: string
         buildTime: number | null
-        created: Deployments['created']
         createdTime: string
         state: Deployments['state']
         logs?: string[]
@@ -56,13 +64,10 @@ export async function GET(request: Request) {
         name: project.name,
         registry,
         buildTime:
-          deployment.state === 'READY' &&
-          deployment.ready &&
-          deployment.buildingAt
+          deployment.ready && deployment.buildingAt
             ? deployment.ready - deployment.buildingAt
             : null,
         state: deployment.state,
-        created: deployment.created,
         createdTime: new Date(deployment.created).toISOString(),
         ...(full ? { deployment } : {}),
       }

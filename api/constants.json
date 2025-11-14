@@ -3,8 +3,9 @@
   "registries": ["npm", "vsr"],
   "teamId": "team_I0bmFHPp3qnoaSnAA6xP70tU",
   "projectSettings": {
-    "installCommand": "npm install --timing --loglevel=http",
+    "installCommand": "npm install --timing --loglevel=http --no-audit --no-fund --no-update-notifier --force",
     "buildCommand": "mkdir dist && echo \"hello world\" > dist/index.html",
-    "outputDirectory": "dist"
+    "outputDirectory": "dist",
+    "framework": null
   }
 }

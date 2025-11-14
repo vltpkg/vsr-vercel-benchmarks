@@ -22,6 +22,7 @@ export async function POST(request: Request) {
   const full = url.searchParams.get('full') === 'true'
   const limit = url.searchParams.get('limit') ?? '100'
   const filters = url.searchParams.getAll('filter')
+  const filterRegistries = url.searchParams.getAll('registry') ?? []
 
   const deploymentsToCreate: CreateDeploymentRequest[] = []
 
@@ -31,8 +32,16 @@ export async function POST(request: Request) {
     return errorResponse('No projects found')
   }
 
+  const actualRegistries = filterRegistries.length
+    ? registries.filter((registry) => filterRegistries.includes(registry))
+    : registries
+
+  if (!actualRegistries.length) {
+    return errorResponse('No registries found')
+  }
+
   for (const project of projects) {
-    for (const registry of registries) {
+    for (const registry of actualRegistries) {
       const target = registry === 'npm' ? 'production' : registry
 
       const deploymentsData = await vercel.deployments.getDeployments({

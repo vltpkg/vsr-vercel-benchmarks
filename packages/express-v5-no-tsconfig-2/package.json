@@ -1,6 +1,0 @@
-{
-  "name": "express-v5-no-tsconfig-2",
-  "dependencies": {
-    "express": "5.1.0"
-  }
-}

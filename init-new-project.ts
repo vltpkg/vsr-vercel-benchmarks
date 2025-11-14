@@ -50,6 +50,10 @@ async function getOrCreateProject(
       requestBody: {
         name: projectName,
         ...projectSettings,
+        // TODO: does this actually unset the framework?
+        // I'm not sure because the types don't allow for null
+        // which is what is used in update-all-projects.ts to unset the framework.
+        framework: undefined,
       },
     })
 
