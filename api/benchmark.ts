@@ -118,6 +118,10 @@ export async function GET(request: Request) {
     date: entry.date,
     npmTotal: entry.totalNpmTime / 1000, // Convert to seconds
     vsrTotal: entry.totalVsrTime / 1000,
+    npmAverage:
+      entry.validCount > 0 ? entry.totalNpmTime / 1000 / entry.validCount : 0,
+    vsrAverage:
+      entry.validCount > 0 ? entry.totalVsrTime / 1000 / entry.validCount : 0,
     validCount: entry.validCount,
   }))
 
@@ -478,8 +482,8 @@ function generateHTML(processedData: any[], trendData: any[]) {
       const plotWidth = chartWidth - padding.left - padding.right;
       const plotHeight = chartHeight - padding.top - padding.bottom;
 
-      const maxTime = Math.max(...trendData.flatMap(d => [d.npmTotal, d.vsrTotal]));
-      const minTime = Math.min(...trendData.flatMap(d => [d.npmTotal, d.vsrTotal]));
+      const maxTime = Math.max(...trendData.flatMap(d => [d.npmAverage, d.vsrAverage]));
+      const minTime = Math.min(...trendData.flatMap(d => [d.npmAverage, d.vsrAverage]));
       const yRange = maxTime - minTime;
       const yPadding = yRange * 0.1;
       const yMin = Math.max(0, minTime - yPadding);
@@ -488,13 +492,13 @@ function generateHTML(processedData: any[], trendData: any[]) {
       const xStep = plotWidth / (trendData.length - 1);
       const npmPoints = trendData.map((d, i) => {
         const x = padding.left + i * xStep;
-        const y = padding.top + plotHeight - ((d.npmTotal - yMin) / (yMax - yMin)) * plotHeight;
-        return { x, y, value: d.npmTotal };
+        const y = padding.top + plotHeight - ((d.npmAverage - yMin) / (yMax - yMin)) * plotHeight;
+        return { x, y, value: d.npmAverage, count: d.validCount };
       });
       const vsrPoints = trendData.map((d, i) => {
         const x = padding.left + i * xStep;
-        const y = padding.top + plotHeight - ((d.vsrTotal - yMin) / (yMax - yMin)) * plotHeight;
-        return { x, y, value: d.vsrTotal };
+        const y = padding.top + plotHeight - ((d.vsrAverage - yMin) / (yMax - yMin)) * plotHeight;
+        return { x, y, value: d.vsrAverage, count: d.validCount };
       });
 
       const npmPath = npmPoints.map((p, i) => \`\${i === 0 ? 'M' : 'L'} \${p.x} \${p.y}\`).join(' ');
@@ -509,7 +513,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
 
       return \`
       <div class="trend-chart">
-        <h3>Total Build Time Trend</h3>
+        <h3>Average Build Time per Project Trend</h3>
         <div class="chart-container">
           <svg class="chart-svg" viewBox="0 0 \${chartWidth} \${chartHeight}">
             \${yAxisLabels.map(label => \`
@@ -529,12 +533,12 @@ function generateHTML(processedData: any[], trendData: any[]) {
             <path d="\${vsrPath}" fill="none" stroke="#000000" stroke-width="3" />
             \${npmPoints.map(p => \`
               <circle cx="\${p.x}" cy="\${p.y}" r="5" fill="#CB3837" stroke="white" stroke-width="2">
-                <title>npm: \${p.value.toFixed(2)}s</title>
+                <title>npm: \${p.value.toFixed(2)}s avg (\${p.count} projects)</title>
               </circle>
             \`).join('')}
             \${vsrPoints.map(p => \`
               <circle cx="\${p.x}" cy="\${p.y}" r="5" fill="#000000" stroke="white" stroke-width="2">
-                <title>vsr: \${p.value.toFixed(2)}s</title>
+                <title>vsr: \${p.value.toFixed(2)}s avg (\${p.count} projects)</title>
               </circle>
             \`).join('')}
           </svg>
@@ -584,23 +588,27 @@ function generateHTML(processedData: any[], trendData: any[]) {
 
       // Update total time comparison
       const totalTimeContainer = document.getElementById('total-time-container');
-      if (data.totalNpmTime > 0 && data.totalVsrTime > 0) {
-        const maxTime = Math.max(data.totalNpmTime, data.totalVsrTime);
-        const npmPercent = (data.totalNpmTime / maxTime) * 100;
-        const vsrPercent = (data.totalVsrTime / maxTime) * 100;
-        const npmSeconds = (data.totalNpmTime / 1000).toFixed(2);
-        const vsrSeconds = (data.totalVsrTime / 1000).toFixed(2);
-        const speedup = (data.totalVsrTime / data.totalNpmTime).toFixed(2);
+      if (data.totalNpmTime > 0 && data.totalVsrTime > 0 && data.validCount > 0) {
+        const npmAverage = data.totalNpmTime / data.validCount;
+        const vsrAverage = data.totalVsrTime / data.validCount;
+        const maxTime = Math.max(npmAverage, vsrAverage);
+        const npmPercent = (npmAverage / maxTime) * 100;
+        const vsrPercent = (vsrAverage / maxTime) * 100;
+        const npmSeconds = (npmAverage / 1000).toFixed(2);
+        const vsrSeconds = (vsrAverage / 1000).toFixed(2);
+        const npmTotal = (data.totalNpmTime / 1000).toFixed(2);
+        const vsrTotal = (data.totalVsrTime / 1000).toFixed(2);
+        const speedup = (vsrAverage / npmAverage).toFixed(2);
 
         totalTimeContainer.innerHTML = \`
           <div class="comparison summary-comparison">
-            <h3>Total Build Time (\${data.validCount} projects)</h3>
+            <h3>Average Build Time per Project (\${data.validCount} projects)</h3>
             <div class="chart">
               <div class="bar-row">
                 <div class="label">npm</div>
                 <div class="bar-container">
                   <div class="bar npm-bar" style="width: \${npmPercent}%">
-                    <span class="value">\${npmSeconds}s</span>
+                    <span class="value">\${npmSeconds}s avg</span>
                   </div>
                 </div>
               </div>
@@ -608,12 +616,12 @@ function generateHTML(processedData: any[], trendData: any[]) {
                 <div class="label">vsr</div>
                 <div class="bar-container">
                   <div class="bar vsr-bar" style="width: \${vsrPercent}%">
-                    <span class="value">\${vsrSeconds}s</span>
+                    <span class="value">\${vsrSeconds}s avg</span>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="speedup"><strong>\${speedup}x \${data.totalVsrTime > data.totalNpmTime ? 'slower' : 'faster'}</strong></div>
+            <div class="speedup"><strong>\${speedup}x \${vsrAverage > npmAverage ? 'slower' : 'faster'}</strong> (Total: npm \${npmTotal}s, vsr \${vsrTotal}s)</div>
           </div>
         \`;
       } else {
