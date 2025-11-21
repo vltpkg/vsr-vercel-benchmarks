@@ -1,5 +1,6 @@
 import data_0 from './data/2025-11-14.json' with { type: 'json' }
 import data_1 from './data/2025-11-17.json' with { type: 'json' }
+import data_2 from './data/2025-11-21.json' with { type: 'json' }
 
 // Configuration: minimum number of days needed to show trend chart
 const MIN_DAYS_FOR_CHART = 2
@@ -8,6 +9,7 @@ const MIN_DAYS_FOR_CHART = 2
 const allData = [
   { date: '2025-11-14', data: data_0 },
   { date: '2025-11-17', data: data_1 },
+  { date: '2025-11-21', data: data_2 },
 ]
 
 interface Deployment {
