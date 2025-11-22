@@ -1,16 +1,20 @@
 import data_0 from './data/2025-11-14.json' with { type: 'json' }
 import data_1 from './data/2025-11-17.json' with { type: 'json' }
 import data_2 from './data/2025-11-21.json' with { type: 'json' }
+import data_3 from './data/2025-11-21_2.json' with { type: 'json' }
+import data_4 from './data/2025-11-21_3.json' with { type: 'json' }
+import data_5 from './data/2025-11-21_4.json' with { type: 'json' }
+
+const rawData = [data_0, data_1, data_2, data_3, data_4, data_5]
 
 // Configuration: minimum number of days needed to show trend chart
 const MIN_DAYS_FOR_CHART = 2
 
 // All available data with dates, sorted by date (oldest first)
-const allData = [
-  { date: '2025-11-14', data: data_0 },
-  { date: '2025-11-17', data: data_1 },
-  { date: '2025-11-21', data: data_2 },
-]
+const allData = rawData.map((d) => ({
+  date: (d as any)[0].createdTime,
+  data: d,
+}))
 
 interface Deployment {
   name: string
@@ -18,6 +22,65 @@ interface Deployment {
   buildDuration: number | null
   state: string
   createdTime: string
+  npmTime?: number | null
+  fetchTiming?: [string, number][]
+}
+
+function getEffectiveDuration(deployment: Deployment): number | null {
+  return deployment.npmTime ?? deployment.buildDuration
+}
+
+interface FetchTimingGap {
+  url: string
+  npmDuration: number
+  vsrDuration: number
+  gap: number
+  speedDiff: number
+}
+
+function analyzeFetchTimingGaps(
+  npmDeployment?: Deployment,
+  vsrDeployment?: Deployment,
+): FetchTimingGap[] {
+  if (
+    !npmDeployment?.fetchTiming?.length ||
+    !vsrDeployment?.fetchTiming?.length
+  ) {
+    return []
+  }
+
+  const npmTiming = new Map(
+    npmDeployment.fetchTiming.map(([url, duration]) => [
+      new URL(url).pathname.replace(/^\//, ''),
+      duration,
+    ]),
+  )
+  const vsrTiming = new Map(
+    vsrDeployment.fetchTiming.map(([url, duration]) => [
+      new URL(url).pathname.replace(/^\/npm\//, ''),
+      duration,
+    ]),
+  )
+
+  const gaps: FetchTimingGap[] = []
+
+  // Find common URLs and calculate gaps
+  for (const [url, npmDuration] of npmTiming) {
+    const vsrDuration = vsrTiming.get(url)
+    if (vsrDuration !== undefined) {
+      gaps.push({
+        url,
+        npmDuration,
+        vsrDuration,
+        gap: vsrDuration - npmDuration,
+        speedDiff: vsrDuration / npmDuration,
+      })
+    }
+  }
+
+  // Sort by gap descending (largest positive gaps first = where vsr is slowest)
+  // Return top 10 where vsr could improve the most
+  return gaps.sort((a, b) => b.gap - a.gap).slice(0, 10)
 }
 
 function processData(latest: Deployment[]) {
@@ -43,6 +106,7 @@ function processData(latest: Deployment[]) {
     npm: Deployment | undefined
     vsr: Deployment | undefined
     hasError: boolean
+    fetchTimingGaps: FetchTimingGap[]
   }> = []
 
   // Track which names we've seen to maintain order from latest.json
@@ -62,6 +126,7 @@ function processData(latest: Deployment[]) {
           !group.vsr ||
           group.npm.state === 'ERROR' ||
           group.vsr.state === 'ERROR',
+        fetchTimingGaps: analyzeFetchTimingGaps(group.npm, group.vsr),
       })
     }
   }
@@ -72,11 +137,11 @@ function processData(latest: Deployment[]) {
   // Calculate total build times for valid comparisons
   const validComparisons = comparisons.filter((c) => !c.hasError)
   const totalNpmTime = validComparisons.reduce(
-    (sum, c) => sum + (c.npm?.buildDuration || 0),
+    (sum, c) => sum + (c.npm ? getEffectiveDuration(c.npm) || 0 : 0),
     0,
   )
   const totalVsrTime = validComparisons.reduce(
-    (sum, c) => sum + (c.vsr?.buildDuration || 0),
+    (sum, c) => sum + (c.vsr ? getEffectiveDuration(c.vsr) || 0 : 0),
     0,
   )
 
@@ -398,6 +463,60 @@ function generateHTML(processedData: any[], trendData: any[]) {
     .hidden {
       display: none;
     }
+    .fetch-timing-details {
+      margin-top: 15px;
+      padding: 15px;
+      background: #f8f9fa;
+      border-radius: 6px;
+      border: 1px solid #dee2e6;
+    }
+    .fetch-timing-details summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: #495057;
+      padding: 5px;
+      user-select: none;
+    }
+    .fetch-timing-details summary:hover {
+      color: #007bff;
+    }
+    .fetch-timing-table {
+      width: 100%;
+      margin-top: 10px;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .fetch-timing-table th {
+      background: #e9ecef;
+      padding: 8px 10px;
+      text-align: left;
+      font-weight: 600;
+      color: #495057;
+      border-bottom: 2px solid #dee2e6;
+    }
+    .fetch-timing-table td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #dee2e6;
+    }
+    .fetch-timing-table tr:hover {
+      background: #f1f3f5;
+    }
+    .fetch-url {
+      max-width: 300px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-family: monospace;
+      font-size: 12px;
+    }
+    .gap-slower {
+      color: #e74c3c;
+      font-weight: 600;
+    }
+    .gap-faster {
+      color: #27ae60;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
@@ -418,9 +537,10 @@ function generateHTML(processedData: any[], trendData: any[]) {
     function renderComparison(comparison) {
       const npmState = comparison.npm?.state || 'MISSING';
       const vsrState = comparison.vsr?.state || 'MISSING';
-      const npmTime = comparison.npm?.buildDuration;
-      const vsrTime = comparison.vsr?.buildDuration;
+      const npmTime = comparison.npm ? (comparison.npm.npmTime ?? comparison.npm.buildDuration) : null;
+      const vsrTime = comparison.vsr ? (comparison.vsr.npmTime ?? comparison.vsr.buildDuration) : null;
       const hasError = comparison.hasError;
+      const hasFetchTiming = comparison.fetchTimingGaps && comparison.fetchTimingGaps.length > 0;
 
       if (npmTime && vsrTime) {
         const maxForComparison = Math.max(npmTime, vsrTime);
@@ -429,6 +549,43 @@ function generateHTML(processedData: any[], trendData: any[]) {
         const npmSeconds = (npmTime / 1000).toFixed(2);
         const vsrSeconds = (vsrTime / 1000).toFixed(2);
         const speedup = (vsrTime / npmTime).toFixed(2);
+
+        let fetchTimingHTML = '';
+        if (hasFetchTiming) {
+          const fetchRows = comparison.fetchTimingGaps.map((gap, index) => {
+            const gapSign = gap.gap > 0 ? '+' : '';
+            const speedDiffText = gap.speedDiff.toFixed(2) + 'x';
+            return \`
+            <tr>
+              <td>\${index + 1}</td>
+              <td class="fetch-url" title="\${gap.url}">\${gap.url}</td>
+              <td>\${gap.npmDuration}ms</td>
+              <td>\${gap.vsrDuration}ms</td>
+              <td class="\${gap.gap > 0 ? 'gap-slower' : 'gap-faster'}">\${gapSign}\${gap.gap}ms (\${speedDiffText})</td>
+            </tr>
+          \`;
+          }).join('');
+          
+          fetchTimingHTML = \`
+            <details class="fetch-timing-details">
+              <summary>Top 10 Fetch Timing Differences</summary>
+              <table class="fetch-timing-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>URL</th>
+                    <th>npm</th>
+                    <th>vsr</th>
+                    <th>Gap</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  \${fetchRows}
+                </tbody>
+              </table>
+            </details>
+          \`;
+        }
 
         return \`
         <div class="comparison">
@@ -454,6 +611,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
             </div>
           </div>
           <div class="speedup">\${speedup}x \${vsrTime > npmTime ? 'slower' : 'faster'}\${hasError ? ' <strong class="error-text">(with errors)</strong>' : ''}</div>
+          \${fetchTimingHTML}
         </div>
         \`;
       } else {

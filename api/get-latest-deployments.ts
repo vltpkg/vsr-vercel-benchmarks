@@ -62,8 +62,9 @@ export async function GET(request: Request) {
         createdTime: string
         buildStartTime: string | null
         readyTime: string | null
+        npmTime: number | null
         state: Deployments['state']
-        logs?: string[]
+        fetchTiming: [string, number][]
         deployment?: Deployments
       } = {
         name: project.name,
@@ -83,6 +84,8 @@ export async function GET(request: Request) {
         readyTime: deployment.ready
           ? new Date(deployment.ready).toISOString()
           : null,
+        npmTime: null,
+        fetchTiming: [],
         ...(full ? { deployment } : {}),
       }
 
@@ -92,7 +95,21 @@ export async function GET(request: Request) {
           teamId,
         })
         if (Array.isArray(buildLogs)) {
-          result.logs = buildLogs.map((log: any) => log.text)
+          for (const log of buildLogs) {
+            const { text } = log as any
+            const isNpmHttpFetch = text.match(
+              /^npm http fetch GET \d+ ([^\s]+) (\d+)ms /,
+            )
+            if (isNpmHttpFetch) {
+              result.fetchTiming.push([isNpmHttpFetch[1], +isNpmHttpFetch[2]])
+              continue
+            }
+            const isTotal = text.match(/^npm timing npm Completed in (\d+)ms$/)
+            if (isTotal) {
+              result.npmTime = +isTotal[1]
+              continue
+            }
+          }
         }
       }
 
