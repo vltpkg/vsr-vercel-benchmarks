@@ -1,11 +1,12 @@
-import data_0 from './data/2025-11-14.json' with { type: 'json' }
-import data_1 from './data/2025-11-17.json' with { type: 'json' }
-import data_2 from './data/2025-11-21.json' with { type: 'json' }
-import data_3 from './data/2025-11-21_2.json' with { type: 'json' }
-import data_4 from './data/2025-11-21_3.json' with { type: 'json' }
-import data_5 from './data/2025-11-21_4.json' with { type: 'json' }
+import data_1 from './data/001.json' with { type: 'json' }
+import data_2 from './data/002.json' with { type: 'json' }
+import data_3 from './data/003.json' with { type: 'json' }
+import data_4 from './data/004.json' with { type: 'json' }
+import data_5 from './data/005.json' with { type: 'json' }
+import data_6 from './data/006.json' with { type: 'json' }
+import data_7 from './data/007.json' with { type: 'json' }
 
-const rawData = [data_0, data_1, data_2, data_3, data_4, data_5]
+const rawData = [data_1, data_2, data_3, data_4, data_5, data_6, data_7]
 
 // Configuration: minimum number of days needed to show trend chart
 const MIN_DAYS_FOR_CHART = 2
@@ -38,49 +39,87 @@ interface FetchTimingGap {
   speedDiff: number
 }
 
+interface FetchTimingGaps {
+  manifest: FetchTimingGap[]
+  manifestBySpeed: FetchTimingGap[]
+  tarball: FetchTimingGap[]
+  tarballBySpeed: FetchTimingGap[]
+}
+
 function analyzeFetchTimingGaps(
   npmDeployment?: Deployment,
   vsrDeployment?: Deployment,
-): FetchTimingGap[] {
+): FetchTimingGaps {
   if (
     !npmDeployment?.fetchTiming?.length ||
     !vsrDeployment?.fetchTiming?.length
   ) {
-    return []
+    return {
+      manifest: [],
+      manifestBySpeed: [],
+      tarball: [],
+      tarballBySpeed: [],
+    }
   }
 
   const npmTiming = new Map(
     npmDeployment.fetchTiming.map(([url, duration]) => [
-      new URL(url).pathname.replace(/^\//, ''),
+      new URL(url).pathname.replace(/^\//, '').replaceAll(/%2F/gi, '/'),
       duration,
     ]),
   )
   const vsrTiming = new Map(
     vsrDeployment.fetchTiming.map(([url, duration]) => [
-      new URL(url).pathname.replace(/^\/npm\//, ''),
+      new URL(url).pathname.replace(/^\/npm\//, '').replaceAll(/%2F/gi, '/'),
       duration,
     ]),
   )
 
-  const gaps: FetchTimingGap[] = []
+  const manifestGaps: FetchTimingGap[] = []
+  const tarballGaps: FetchTimingGap[] = []
 
   // Find common URLs and calculate gaps
   for (const [url, npmDuration] of npmTiming) {
     const vsrDuration = vsrTiming.get(url)
     if (vsrDuration !== undefined) {
-      gaps.push({
+      const gap: FetchTimingGap = {
         url,
         npmDuration,
         vsrDuration,
         gap: vsrDuration - npmDuration,
         speedDiff: vsrDuration / npmDuration,
-      })
+      }
+
+      // Separate by URL type
+      if (url.endsWith('.tgz')) {
+        tarballGaps.push(gap)
+      } else {
+        manifestGaps.push(gap)
+      }
     }
   }
 
-  // Sort by gap descending (largest positive gaps first = where vsr is slowest)
-  // Return top 10 where vsr could improve the most
-  return gaps.sort((a, b) => b.gap - a.gap).slice(0, 10)
+  // Create two versions: sorted by absolute gap and by speed difference
+  // Default to absolute gap (total slowdown in ms)
+  const manifestByGap = [...manifestGaps]
+    .sort((a, b) => b.gap - a.gap)
+    .slice(0, 10)
+  const manifestBySpeed = [...manifestGaps]
+    .sort((a, b) => b.speedDiff - a.speedDiff)
+    .slice(0, 10)
+  const tarballByGap = [...tarballGaps]
+    .sort((a, b) => b.gap - a.gap)
+    .slice(0, 10)
+  const tarballBySpeed = [...tarballGaps]
+    .sort((a, b) => b.speedDiff - a.speedDiff)
+    .slice(0, 10)
+
+  return {
+    manifest: manifestByGap,
+    manifestBySpeed,
+    tarball: tarballByGap,
+    tarballBySpeed,
+  }
 }
 
 function processData(latest: Deployment[]) {
@@ -106,7 +145,7 @@ function processData(latest: Deployment[]) {
     npm: Deployment | undefined
     vsr: Deployment | undefined
     hasError: boolean
-    fetchTimingGaps: FetchTimingGap[]
+    fetchTimingGaps: FetchTimingGaps
   }> = []
 
   // Track which names we've seen to maintain order from latest.json
@@ -517,6 +556,38 @@ function generateHTML(processedData: any[], trendData: any[]) {
       color: #27ae60;
       font-weight: 600;
     }
+    .fetch-timing-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .sort-toggle {
+      display: flex;
+      gap: 5px;
+      background: #e9ecef;
+      border-radius: 6px;
+      padding: 3px;
+    }
+    .sort-toggle-btn {
+      padding: 6px 12px;
+      border: none;
+      background: transparent;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 500;
+      color: #666;
+      transition: all 0.2s ease;
+    }
+    .sort-toggle-btn:hover {
+      color: #333;
+    }
+    .sort-toggle-btn.active {
+      background: white;
+      color: #007bff;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
   </style>
 </head>
 <body>
@@ -540,7 +611,9 @@ function generateHTML(processedData: any[], trendData: any[]) {
       const npmTime = comparison.npm ? (comparison.npm.npmTime ?? comparison.npm.buildDuration) : null;
       const vsrTime = comparison.vsr ? (comparison.vsr.npmTime ?? comparison.vsr.buildDuration) : null;
       const hasError = comparison.hasError;
-      const hasFetchTiming = comparison.fetchTimingGaps && comparison.fetchTimingGaps.length > 0;
+      const hasManifestTiming = comparison.fetchTimingGaps && comparison.fetchTimingGaps.manifest.length > 0;
+      const hasTarballTiming = comparison.fetchTimingGaps && comparison.fetchTimingGaps.tarball.length > 0;
+      const hasFetchTiming = hasManifestTiming || hasTarballTiming;
 
       if (npmTime && vsrTime) {
         const maxForComparison = Math.max(npmTime, vsrTime);
@@ -552,39 +625,62 @@ function generateHTML(processedData: any[], trendData: any[]) {
 
         let fetchTimingHTML = '';
         if (hasFetchTiming) {
-          const fetchRows = comparison.fetchTimingGaps.map((gap, index) => {
-            const gapSign = gap.gap > 0 ? '+' : '';
-            const speedDiffText = gap.speedDiff.toFixed(2) + 'x';
-            return \`
-            <tr>
-              <td>\${index + 1}</td>
-              <td class="fetch-url" title="\${gap.url}">\${gap.url}</td>
-              <td>\${gap.npmDuration}ms</td>
-              <td>\${gap.vsrDuration}ms</td>
-              <td class="\${gap.gap > 0 ? 'gap-slower' : 'gap-faster'}">\${gapSign}\${gap.gap}ms (\${speedDiffText})</td>
-            </tr>
-          \`;
-          }).join('');
+          const comparisonId = comparison.name.replace(/[^a-zA-Z0-9]/g, '-');
           
-          fetchTimingHTML = \`
-            <details class="fetch-timing-details">
-              <summary>Top 10 Fetch Timing Differences</summary>
-              <table class="fetch-timing-table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>URL</th>
-                    <th>npm</th>
-                    <th>vsr</th>
-                    <th>Gap</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  \${fetchRows}
-                </tbody>
-              </table>
-            </details>
-          \`;
+          function renderTable(gaps, title, type) {
+            const rows = gaps.map((gap, index) => {
+              const gapSign = gap.gap > 0 ? '+' : '';
+              const speedDiffText = gap.speedDiff.toFixed(2) + 'x';
+              return \`
+              <tr>
+                <td>\${index + 1}</td>
+                <td class="fetch-url" title="\${gap.url}">\${gap.url}</td>
+                <td>\${gap.npmDuration}ms</td>
+                <td>\${gap.vsrDuration}ms</td>
+                <td class="\${gap.gap > 0 ? 'gap-slower' : 'gap-faster'}">\${gapSign}\${gap.gap}ms (\${speedDiffText})</td>
+              </tr>
+            \`;
+            }).join('');
+            
+            return \`
+              <details class="fetch-timing-details">
+                <summary>\${title}</summary>
+                <div class="fetch-timing-header">
+                  <span style="font-size: 14px; font-weight: 600;">Sort by:</span>
+                  <div class="sort-toggle">
+                    <button class="sort-toggle-btn active" onclick="toggleSort('\${comparisonId}', '\${type}', 'gap')">Total Slowdown</button>
+                    <button class="sort-toggle-btn" onclick="toggleSort('\${comparisonId}', '\${type}', 'speed')">Relative Difference</button>
+                  </div>
+                </div>
+                <table class="fetch-timing-table" id="\${comparisonId}-\${type}-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>URL</th>
+                      <th>npm</th>
+                      <th>vsr</th>
+                      <th>Gap</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    \${rows}
+                  </tbody>
+                </table>
+              </details>
+            \`;
+          }
+          
+          let manifestTableHTML = '';
+          if (hasManifestTiming) {
+            manifestTableHTML = renderTable(comparison.fetchTimingGaps.manifest, 'Top 10 Manifest Slow Downs', 'manifest');
+          }
+          
+          let tarballTableHTML = '';
+          if (hasTarballTiming) {
+            tarballTableHTML = renderTable(comparison.fetchTimingGaps.tarball, 'Top 10 Tarball Slow Downs', 'tarball');
+          }
+          
+          fetchTimingHTML = manifestTableHTML + tarballTableHTML;
         }
 
         return \`
@@ -634,6 +730,49 @@ function generateHTML(processedData: any[], trendData: any[]) {
         \`;
       }
     }
+
+    // Store current data globally for toggle functionality
+    window.CURRENT_DATA = null;
+    
+    window.toggleSort = function(comparisonId, type, sortBy) {
+      const data = window.CURRENT_DATA;
+      if (!data) return;
+      
+      const comparison = data.comparisons.find(c => c.name.replace(/[^a-zA-Z0-9]/g, '-') === comparisonId);
+      if (!comparison) return;
+      
+      // Get the appropriate data based on sort type
+      const gaps = sortBy === 'gap' 
+        ? comparison.fetchTimingGaps[type]
+        : comparison.fetchTimingGaps[type + 'BySpeed'];
+      
+      // Update table content
+      const table = document.getElementById(\`\${comparisonId}-\${type}-table\`);
+      if (table) {
+        const tbody = table.querySelector('tbody');
+        tbody.innerHTML = gaps.map((gap, index) => {
+          const gapSign = gap.gap > 0 ? '+' : '';
+          const speedDiffText = gap.speedDiff.toFixed(2) + 'x';
+          return \`
+            <tr>
+              <td>\${index + 1}</td>
+              <td class="fetch-url" title="\${gap.url}">\${gap.url}</td>
+              <td>\${gap.npmDuration}ms</td>
+              <td>\${gap.vsrDuration}ms</td>
+              <td class="\${gap.gap > 0 ? 'gap-slower' : 'gap-faster'}">\${gapSign}\${gap.gap}ms (\${speedDiffText})</td>
+            </tr>
+          \`;
+        }).join('');
+      }
+      
+      // Update button states
+      const details = table.closest('.fetch-timing-details');
+      const buttons = details.querySelectorAll('.sort-toggle-btn');
+      buttons.forEach(btn => {
+        const btnSortBy = btn.textContent.includes('Total') ? 'gap' : 'speed';
+        btn.classList.toggle('active', btnSortBy === sortBy);
+      });
+    };
 
     function renderTrendChart(trendData) {
       const padding = { top: 20, right: 40, bottom: 40, left: 60 };
@@ -720,6 +859,9 @@ function generateHTML(processedData: any[], trendData: any[]) {
     function renderData(dateStr) {
       const data = window.BENCHMARK_DATA.find(d => d.date === dateStr);
       if (!data) return;
+      
+      // Store current data for toggle functionality
+      window.CURRENT_DATA = data;
 
       // Update answer
       const answerContainer = document.getElementById('answer-container');
