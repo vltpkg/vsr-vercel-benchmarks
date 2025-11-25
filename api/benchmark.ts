@@ -5,8 +5,24 @@ import data_4 from './data/004.json' with { type: 'json' }
 import data_5 from './data/005.json' with { type: 'json' }
 import data_6 from './data/006.json' with { type: 'json' }
 import data_7 from './data/007.json' with { type: 'json' }
+import data_8 from './data/008.json' with { type: 'json' } // Increased Neon compute
+import data_9 from './data/009.json' with { type: 'json' } // Ensured warm cache
+import data_10 from './data/010.json' with { type: 'json' } // Single joined query for package/versions
+import data_11 from './data/011.json' with { type: 'json' } // warm cache again
 
-const rawData = [data_1, data_2, data_3, data_4, data_5, data_6, data_7]
+const rawData = [
+  data_1,
+  data_2,
+  data_3,
+  data_4,
+  data_5,
+  data_6,
+  data_7,
+  data_8,
+  data_9,
+  data_10,
+  data_11,
+]
 
 // Configuration: minimum number of days needed to show trend chart
 const MIN_DAYS_FOR_CHART = 2
