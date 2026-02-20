@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
-import { getBenchmarkProjects } from './api/util.ts'
-import constants from './api/constants.json' with { type: 'json' }
+import { getBenchmarkProjects } from './util.ts'
+import constants from './constants.json' with { type: 'json' }
 import { Vercel } from '@vercel/sdk'
 
 const VERCEL_TOKEN = process.env.VERCEL_TOKEN!

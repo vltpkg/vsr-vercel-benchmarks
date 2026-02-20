@@ -44,3 +44,37 @@ export const errorResponse = (error: string, code = 500) => {
 export const successResponse = (data: any) => {
   return new Response(JSON.stringify(data, null, 2), { status: 200 })
 }
+
+export const createCombinations = <T>(arrays: T[][]): T[][] => {
+  return arrays.reduce(
+    (acc, array) => {
+      return acc.flatMap((combination) =>
+        array.map((item) => [...combination, item]),
+      )
+    },
+    [[]] as T[][],
+  )
+}
+
+export const shortestCommonPrefix = (strings: string[]) => {
+  if (strings.length === 0) {
+    return ''
+  }
+  let prefix = strings[0]!
+  for (const string of strings) {
+    while (!string.startsWith(prefix)) {
+      prefix = prefix.slice(0, -1)
+      if (prefix === '') {
+        return ''
+      }
+    }
+  }
+  return prefix
+}
+
+export const uniqBy = <T>(array: T[], key: (item: T) => string): T[] => {
+  return array.filter(
+    (item, index, self) =>
+      index === self.findIndex((t) => key(t) === key(item)),
+  )
+}

@@ -1,6 +1,8 @@
 {
-  "customEnvironment": "vsr",
-  "registries": ["npm", "vsr"],
+  "registries": {
+    "npm": "https://registry.npmjs.org/",
+    "vsr": "https://registry.vlt.io/npm/"
+  },
   "teamId": "team_I0bmFHPp3qnoaSnAA6xP70tU",
   "projectSettings": {
     "installCommand": "npm install --timing --loglevel=http --no-audit --no-fund --no-update-notifier --force --ignore-scripts",

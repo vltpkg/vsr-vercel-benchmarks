@@ -8,7 +8,7 @@ import data_7 from './data/007.json' with { type: 'json' }
 import data_8 from './data/008.json' with { type: 'json' } // Increased Neon compute
 import data_9 from './data/009.json' with { type: 'json' } // Ensured warm cache
 import data_10 from './data/010.json' with { type: 'json' } // Single joined query for package/versions
-import data_11 from './data/011.json' with { type: 'json' } // warm cache again
+import data_14 from './data/014.json' with { type: 'json' } // registry.vlt.io warm cache
 
 const rawData = [
   data_1,
@@ -21,7 +21,7 @@ const rawData = [
   data_8,
   data_9,
   data_10,
-  data_11,
+  data_14,
 ]
 
 // Configuration: minimum number of days needed to show trend chart
@@ -138,6 +138,55 @@ function analyzeFetchTimingGaps(
   }
 }
 
+function getRegistryKind(deployment: Deployment): 'npm' | 'vsr' | undefined {
+  const normalized = deployment.registry.trim().toLowerCase()
+  if (normalized === 'npm' || normalized === 'vsr') {
+    return normalized
+  }
+
+  if (normalized.includes('npmjs.org')) {
+    return 'npm'
+  }
+  if (
+    normalized.includes('vlt.io') ||
+    normalized.includes('vlt.sh') ||
+    normalized.includes('vsr')
+  ) {
+    return 'vsr'
+  }
+
+  try {
+    const url = new URL(
+      normalized.includes('://') ? normalized : `https://${normalized}`,
+    )
+    if (url.hostname.includes('npmjs.org')) {
+      return 'npm'
+    }
+    if (url.hostname.includes('vlt.io') || url.hostname.includes('vlt.sh')) {
+      return 'vsr'
+    }
+  } catch {
+    // Ignore malformed registry values and try fallback below.
+  }
+
+  const firstFetchUrl = deployment.fetchTiming?.[0]?.[0]
+  if (firstFetchUrl) {
+    try {
+      const host = new URL(firstFetchUrl).hostname.toLowerCase()
+      if (host.includes('npmjs.org')) {
+        return 'npm'
+      }
+      if (host.includes('vlt.io') || host.includes('vlt.sh')) {
+        return 'vsr'
+      }
+    } catch {
+      return undefined
+    }
+  }
+
+  return undefined
+}
+
 function processData(latest: Deployment[]) {
   // Group deployments by name
   const grouped = new Map<string, { npm?: Deployment; vsr?: Deployment }>()
@@ -148,9 +197,10 @@ function processData(latest: Deployment[]) {
       grouped.set(name, {})
     }
     const group = grouped.get(name)!
-    if (deployment.registry === 'npm') {
+    const registryKind = getRegistryKind(deployment)
+    if (registryKind === 'npm') {
       group.npm = deployment
-    } else if (deployment.registry === 'vsr') {
+    } else if (registryKind === 'vsr') {
       group.vsr = deployment
     }
   }
@@ -269,7 +319,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Is vsr on Vercel Fast Yet?</title>
+  <title>Is registry.vlt.io Fast Yet?</title>
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
@@ -607,7 +657,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
   </style>
 </head>
 <body>
-  <h1>Is vsr on Vercel Fast Yet?</h1>
+  <h1>Is registry.vlt.io Fast Yet?</h1>
   <div class="date-selector">
     <label for="date-select">Select Date:</label>
     <select id="date-select"></select>
@@ -674,7 +724,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
                       <th>#</th>
                       <th>URL</th>
                       <th>npm</th>
-                      <th>vsr</th>
+                      <th>vlt</th>
                       <th>Gap</th>
                     </tr>
                   </thead>
@@ -688,12 +738,12 @@ function generateHTML(processedData: any[], trendData: any[]) {
           
           let manifestTableHTML = '';
           if (hasManifestTiming) {
-            manifestTableHTML = renderTable(comparison.fetchTimingGaps.manifest, 'Top 10 Manifest Slow Downs', 'manifest');
+            manifestTableHTML = renderTable(comparison.fetchTimingGaps.manifest, 'Top 10 Manifest Differences', 'manifest');
           }
           
           let tarballTableHTML = '';
           if (hasTarballTiming) {
-            tarballTableHTML = renderTable(comparison.fetchTimingGaps.tarball, 'Top 10 Tarball Slow Downs', 'tarball');
+            tarballTableHTML = renderTable(comparison.fetchTimingGaps.tarball, 'Top 10 Tarball Differences', 'tarball');
           }
           
           fetchTimingHTML = manifestTableHTML + tarballTableHTML;
@@ -713,7 +763,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
               <div class="state-badge \${npmState === 'ERROR' ? 'error' : 'ready'}">\${npmState}</div>
             </div>
             <div class="bar-row">
-              <div class="label">vsr</div>
+              <div class="label">vlt</div>
               <div class="bar-container">
                 <div class="bar vsr-bar" style="width: \${vsrPercent}%">
                   <span class="value">\${vsrSeconds}s</span>
@@ -737,7 +787,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
               <div class="time">\${npmTime ? (npmTime / 1000).toFixed(2) + 's' : 'N/A'}</div>
             </div>
             <div class="error-row">
-              <div class="label">vsr</div>
+              <div class="label">vlt</div>
               <div class="state-badge \${vsrState === 'ERROR' ? 'error' : 'missing'}">\${vsrState}</div>
               <div class="time">\${vsrTime ? (vsrTime / 1000).toFixed(2) + 's' : 'N/A'}</div>
             </div>
@@ -796,6 +846,16 @@ function generateHTML(processedData: any[], trendData: any[]) {
       const chartHeight = 300;
       const plotWidth = chartWidth - padding.left - padding.right;
       const plotHeight = chartHeight - padding.top - padding.bottom;
+      const formatXAxisDate = (dateString) => {
+        const parsed = new Date(dateString);
+        if (Number.isNaN(parsed.getTime())) {
+          return dateString;
+        }
+
+        const month = String(parsed.getMonth() + 1).padStart(2, '0');
+        const day = String(parsed.getDate()).padStart(2, '0');
+        return month + '/' + day;
+      };
 
       const maxTime = Math.max(...trendData.flatMap(d => [d.npmAverage, d.vsrAverage]));
       const minTime = Math.min(...trendData.flatMap(d => [d.npmAverage, d.vsrAverage]));
@@ -842,7 +902,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
             \${trendData.map((d, i) => {
               const x = padding.left + i * xStep;
               return \`<text x="\${x}" y="\${chartHeight - padding.bottom + 20}" text-anchor="middle" 
-                           font-size="12" fill="#666">\${d.date}</text>\`;
+                           font-size="12" fill="#666">\${formatXAxisDate(d.date)}</text>\`;
             }).join('')}
             <path d="\${npmPath}" fill="none" stroke="#CB3837" stroke-width="3" />
             <path d="\${vsrPath}" fill="none" stroke="#000000" stroke-width="3" />
@@ -853,7 +913,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
             \`).join('')}
             \${vsrPoints.map(p => \`
               <circle cx="\${p.x}" cy="\${p.y}" r="5" fill="#000000" stroke="white" stroke-width="2">
-                <title>vsr: \${p.value.toFixed(2)}s avg (\${p.count} projects)</title>
+                <title>vlt: \${p.value.toFixed(2)}s avg (\${p.count} projects)</title>
               </circle>
             \`).join('')}
           </svg>
@@ -865,7 +925,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
           </div>
           <div class="legend-item">
             <div class="legend-color vsr"></div>
-            <span>vsr</span>
+            <span>vlt</span>
           </div>
         </div>
       </div>
@@ -931,7 +991,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
                 </div>
               </div>
               <div class="bar-row">
-                <div class="label">vsr</div>
+                <div class="label">vlt</div>
                 <div class="bar-container">
                   <div class="bar vsr-bar" style="width: \${vsrPercent}%">
                     <span class="value">\${vsrSeconds}s avg</span>
@@ -939,7 +999,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
                 </div>
               </div>
             </div>
-            <div class="speedup"><strong>\${speedup}x \${vsrAverage > npmAverage ? 'slower' : 'faster'}</strong> (Total: npm \${npmTotal}s, vsr \${vsrTotal}s)</div>
+            <div class="speedup"><strong>\${speedup}x \${vsrAverage > npmAverage ? 'slower' : 'faster'}</strong> (Total: npm \${npmTotal}s, vlt \${vsrTotal}s)</div>
           </div>
         \`;
       } else {
