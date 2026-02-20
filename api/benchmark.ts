@@ -671,6 +671,19 @@ function generateHTML(processedData: any[], trendData: any[]) {
   <script>
     ${dataScript}
 
+    function formatPercentDiff(vltTime, npmTime) {
+      if (!Number.isFinite(vltTime) || !Number.isFinite(npmTime) || npmTime === 0) {
+        return 'n/a';
+      }
+
+      const diffPercent = ((vltTime - npmTime) / npmTime) * 100;
+      if (Math.abs(diffPercent) < 0.05) {
+        return 'same speed';
+      }
+
+      return Math.abs(diffPercent).toFixed(1) + '% ' + (diffPercent > 0 ? 'slower' : 'faster');
+    }
+
     function renderComparison(comparison) {
       const npmState = comparison.npm?.state || 'MISSING';
       const vsrState = comparison.vsr?.state || 'MISSING';
@@ -687,7 +700,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
         const vsrPercent = (vsrTime / maxForComparison) * 100;
         const npmSeconds = (npmTime / 1000).toFixed(2);
         const vsrSeconds = (vsrTime / 1000).toFixed(2);
-        const speedup = (vsrTime / npmTime).toFixed(2);
+        const speedDiffText = formatPercentDiff(vsrTime, npmTime);
 
         let fetchTimingHTML = '';
         if (hasFetchTiming) {
@@ -696,7 +709,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
           function renderTable(gaps, title, type) {
             const rows = gaps.map((gap, index) => {
               const gapSign = gap.gap > 0 ? '+' : '';
-              const speedDiffText = gap.speedDiff.toFixed(2) + 'x';
+              const speedDiffText = formatPercentDiff(gap.vsrDuration, gap.npmDuration);
               return \`
               <tr>
                 <td>\${index + 1}</td>
@@ -772,7 +785,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
               <div class="state-badge \${vsrState === 'ERROR' ? 'error' : 'ready'}">\${vsrState}</div>
             </div>
           </div>
-          <div class="speedup">\${speedup}x \${vsrTime > npmTime ? 'slower' : 'faster'}\${hasError ? ' <strong class="error-text">(with errors)</strong>' : ''}</div>
+          <div class="speedup">\${speedDiffText}\${hasError ? ' <strong class="error-text">(with errors)</strong>' : ''}</div>
           \${fetchTimingHTML}
         </div>
         \`;
@@ -818,7 +831,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
         const tbody = table.querySelector('tbody');
         tbody.innerHTML = gaps.map((gap, index) => {
           const gapSign = gap.gap > 0 ? '+' : '';
-          const speedDiffText = gap.speedDiff.toFixed(2) + 'x';
+          const speedDiffText = formatPercentDiff(gap.vsrDuration, gap.npmDuration);
           return \`
             <tr>
               <td>\${index + 1}</td>
@@ -976,7 +989,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
         const vsrSeconds = (vsrAverage / 1000).toFixed(2);
         const npmTotal = (data.totalNpmTime / 1000).toFixed(2);
         const vsrTotal = (data.totalVsrTime / 1000).toFixed(2);
-        const speedup = (vsrAverage / npmAverage).toFixed(2);
+        const speedDiffText = formatPercentDiff(vsrAverage, npmAverage);
 
         totalTimeContainer.innerHTML = \`
           <div class="comparison summary-comparison">
@@ -999,7 +1012,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
                 </div>
               </div>
             </div>
-            <div class="speedup"><strong>\${speedup}x \${vsrAverage > npmAverage ? 'slower' : 'faster'}</strong> (Total: npm \${npmTotal}s, vlt \${vsrTotal}s)</div>
+            <div class="speedup"><strong>\${speedDiffText}</strong> (Total: npm \${npmTotal}s, vlt \${vsrTotal}s)</div>
           </div>
         \`;
       } else {
