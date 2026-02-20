@@ -23,7 +23,9 @@ async function triggerBenchmark({
   limit = '100',
   filter = [],
   registry = ['npm', 'vsr'],
-  variant: variants = ['lockfile', 'no-lockfile'],
+  // We are limited to 120 deployments before being rate limited by Vercel
+  // so we can only run one variant at a time.
+  variant: variants = [/* 'lockfile', */ 'no-lockfile'],
 }: {
   full?: boolean
   limit?: string
