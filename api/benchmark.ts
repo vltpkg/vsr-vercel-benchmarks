@@ -9,6 +9,7 @@ import data_8 from './data/008.json' with { type: 'json' } // Increased Neon com
 import data_9 from './data/009.json' with { type: 'json' } // Ensured warm cache
 import data_10 from './data/010.json' with { type: 'json' } // Single joined query for package/versions
 import data_14 from './data/014.json' with { type: 'json' } // registry.vlt.io warm cache
+import data_15 from './data/015.json' with { type: 'json' } // registry.vlt.io cold cache (ran manual eviction before)
 
 const rawData = [
   data_1,
@@ -22,6 +23,7 @@ const rawData = [
   data_9,
   data_10,
   data_14,
+  data_15,
 ]
 
 // Configuration: minimum number of days needed to show trend chart
