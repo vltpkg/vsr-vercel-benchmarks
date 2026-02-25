@@ -12,8 +12,15 @@ import data_14 from './data/014.json' with { type: 'json' } // registry.vlt.io w
 // shhhhhhh 🤫
 // import data_15 from './data/015.json' with { type: 'json' } // registry.vlt.io cold cache (ran manual eviction before)
 import data_16 from './data/016.json' with { type: 'json' } // registry.vlt.io warm cache
+import lockfile_data_1 from './lockfile/001.json' with { type: 'json' }
+import lockfile_data_2 from './lockfile/002.json' with { type: 'json' }
+import lockfile_data_3 from './lockfile/003.json' with { type: 'json' }
+import lockfile_data_4 from './lockfile/004.json' with { type: 'json' } // invalidated cache
+import lockfile_data_5 from './lockfile/005.json' with { type: 'json' } // warm cache
 
-const rawData = [
+type DataSource = 'no-lockfile' | 'lockfile'
+
+const rawNoLockfileData = [
   data_1,
   data_2,
   data_3,
@@ -28,14 +35,32 @@ const rawData = [
   data_16,
 ]
 
+const rawLockfileData = [
+  lockfile_data_1,
+  lockfile_data_2,
+  lockfile_data_3,
+  lockfile_data_4,
+  lockfile_data_5,
+]
+
 // Configuration: minimum number of days needed to show trend chart
 const MIN_DAYS_FOR_CHART = 2
 
-// All available data with dates, sorted by date (oldest first)
-const allData = rawData.map((d) => ({
-  date: (d as any)[0].createdTime,
-  data: d,
-}))
+function buildDataEntries(rawData: any[]) {
+  // All available data with dates, sorted by date (oldest first)
+  return rawData.map((d) => ({
+    date: (d as any)[0].createdTime,
+    data: d,
+  }))
+}
+
+const allDataBySource: Record<
+  DataSource,
+  Array<{ date: string; data: Deployment[] }>
+> = {
+  'no-lockfile': buildDataEntries(rawNoLockfileData as any),
+  lockfile: buildDataEntries(rawLockfileData as any),
+}
 
 interface Deployment {
   name: string
@@ -275,33 +300,66 @@ function processData(latest: Deployment[]) {
 }
 
 export async function GET(request: Request) {
-  const latestDataEntry = allData[allData.length - 1]
-  if (!latestDataEntry) {
+  const allEntriesCount = Object.values(allDataBySource).reduce(
+    (sum, entries) => sum + entries.length,
+    0,
+  )
+  if (allEntriesCount === 0) {
     return new Response('No data available', { status: 404 })
   }
 
+  const requestUrl = new URL(request.url)
+  const requestedSource = requestUrl.searchParams.get('source')
+
+  let initialSource: DataSource =
+    requestedSource === 'lockfile' ? 'lockfile' : 'no-lockfile'
+  if (allDataBySource[initialSource].length === 0) {
+    initialSource =
+      allDataBySource['no-lockfile'].length > 0 ? 'no-lockfile' : 'lockfile'
+  }
+
   // Process all data for client-side rendering
-  const processedData = allData.map((dataEntry) => {
-    const result = processData(dataEntry.data as Deployment[])
-    return {
-      date: dataEntry.date,
-      ...result,
-    }
-  })
+  const processedDataBySource = Object.entries(allDataBySource).reduce(
+    (result, [source, entries]) => {
+      result[source as DataSource] = entries.map((dataEntry) => {
+        const processed = processData(dataEntry.data as Deployment[])
+        return {
+          date: dataEntry.date,
+          ...processed,
+        }
+      })
+      return result
+    },
+    {} as Record<DataSource, any[]>,
+  )
 
   // Calculate trend data across all available dates
-  const trendData = processedData.map((entry) => ({
-    date: entry.date,
-    npmTotal: entry.totalNpmTime / 1000, // Convert to seconds
-    vsrTotal: entry.totalVsrTime / 1000,
-    npmAverage:
-      entry.validCount > 0 ? entry.totalNpmTime / 1000 / entry.validCount : 0,
-    vsrAverage:
-      entry.validCount > 0 ? entry.totalVsrTime / 1000 / entry.validCount : 0,
-    validCount: entry.validCount,
-  }))
+  const trendDataBySource = Object.entries(processedDataBySource).reduce(
+    (result, [source, processedData]) => {
+      result[source as DataSource] = processedData.map((entry) => ({
+        date: entry.date,
+        npmTotal: entry.totalNpmTime / 1000, // Convert to seconds
+        vsrTotal: entry.totalVsrTime / 1000,
+        npmAverage:
+          entry.validCount > 0
+            ? entry.totalNpmTime / 1000 / entry.validCount
+            : 0,
+        vsrAverage:
+          entry.validCount > 0
+            ? entry.totalVsrTime / 1000 / entry.validCount
+            : 0,
+        validCount: entry.validCount,
+      }))
+      return result
+    },
+    {} as Record<DataSource, any[]>,
+  )
 
-  const html = generateHTML(processedData, trendData)
+  const html = generateHTML(
+    processedDataBySource,
+    trendDataBySource,
+    initialSource,
+  )
 
   return new Response(html, {
     headers: {
@@ -310,12 +368,17 @@ export async function GET(request: Request) {
   })
 }
 
-function generateHTML(processedData: any[], trendData: any[]) {
+function generateHTML(
+  processedDataBySource: Record<DataSource, any[]>,
+  trendDataBySource: Record<DataSource, any[]>,
+  initialSource: DataSource,
+) {
   // Embed all processed data as JSON for client-side rendering
   const dataScript = `
-    window.BENCHMARK_DATA = ${JSON.stringify(processedData)};
-    window.TREND_DATA = ${JSON.stringify(trendData)};
+    window.BENCHMARK_DATA_BY_SOURCE = ${JSON.stringify(processedDataBySource)};
+    window.TREND_DATA_BY_SOURCE = ${JSON.stringify(trendDataBySource)};
     window.MIN_DAYS_FOR_CHART = ${MIN_DAYS_FOR_CHART};
+    window.INITIAL_SOURCE = ${JSON.stringify(initialSource)};
   `
 
   return `
@@ -663,6 +726,11 @@ function generateHTML(processedData: any[], trendData: any[]) {
 <body>
   <h1>Is registry.vlt.io Fast Yet?</h1>
   <div class="date-selector">
+    <label for="source-select">Data Source:</label>
+    <select id="source-select">
+      <option value="no-lockfile">no-lockfile</option>
+      <option value="lockfile">lockfile</option>
+    </select>
     <label for="date-select">Select Date:</label>
     <select id="date-select"></select>
   </div>
@@ -949,9 +1017,41 @@ function generateHTML(processedData: any[], trendData: any[]) {
       \`;
     }
 
-    function renderData(dateStr) {
-      const data = window.BENCHMARK_DATA.find(d => d.date === dateStr);
-      if (!data) return;
+    function getBenchmarkDataForSource(source) {
+      return window.BENCHMARK_DATA_BY_SOURCE[source] || [];
+    }
+
+    function getTrendDataForSource(source) {
+      return window.TREND_DATA_BY_SOURCE[source] || [];
+    }
+
+    function renderNoData(source) {
+      const answerContainer = document.getElementById('answer-container');
+      const summaryContainer = document.getElementById('summary-container');
+      const totalTimeContainer = document.getElementById('total-time-container');
+      const trendChartContainer = document.getElementById('trend-chart-container');
+      const chartsContainer = document.getElementById('charts-container');
+
+      answerContainer.innerHTML = '';
+      summaryContainer.innerHTML = \`
+        <div class="summary">
+          <p>No data available for <strong>\${source}</strong>.</p>
+        </div>
+      \`;
+      totalTimeContainer.innerHTML = '';
+      trendChartContainer.innerHTML = '';
+      chartsContainer.innerHTML = '';
+      window.CURRENT_DATA = null;
+    }
+
+    function renderData(dateStr, source) {
+      const benchmarkData = getBenchmarkDataForSource(source);
+      const trendData = getTrendDataForSource(source);
+      const data = benchmarkData.find(d => d.date === dateStr);
+      if (!data) {
+        renderNoData(source);
+        return;
+      }
       
       // Store current data for toggle functionality
       window.CURRENT_DATA = data;
@@ -973,6 +1073,7 @@ function generateHTML(processedData: any[], trendData: any[]) {
       const summaryContainer = document.getElementById('summary-container');
       summaryContainer.innerHTML = \`
         <div class="summary">
+          <p><strong>Data source:</strong> \${source}</p>
           <p><strong>\${data.validCount + data.errorCount}</strong> total projects (<strong class="error-text">\${data.errorCount}</strong> with errors)</p>
           <div class="timestamps">
             <p><strong>Earliest deployment:</strong> \${data.earliestDate}</p>
@@ -1025,8 +1126,8 @@ function generateHTML(processedData: any[], trendData: any[]) {
 
       // Update trend chart
       const trendChartContainer = document.getElementById('trend-chart-container');
-      if (window.BENCHMARK_DATA.length >= window.MIN_DAYS_FOR_CHART && window.TREND_DATA.length >= window.MIN_DAYS_FOR_CHART) {
-        trendChartContainer.innerHTML = renderTrendChart(window.TREND_DATA);
+      if (benchmarkData.length >= window.MIN_DAYS_FOR_CHART && trendData.length >= window.MIN_DAYS_FOR_CHART) {
+        trendChartContainer.innerHTML = renderTrendChart(trendData);
       } else {
         trendChartContainer.innerHTML = '';
       }
@@ -1036,30 +1137,66 @@ function generateHTML(processedData: any[], trendData: any[]) {
       chartsContainer.innerHTML = data.comparisons.map(renderComparison).join('');
     }
 
-    // Initialize dropdown
+    function setSourceInUrl(source) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('source', source);
+      window.history.replaceState({}, '', url.pathname + url.search + url.hash);
+    }
+
+    function populateDateDropdown(source) {
+      const benchmarkData = getBenchmarkDataForSource(source);
+      dateSelect.innerHTML = '';
+      benchmarkData.forEach(d => {
+        const option = document.createElement('option');
+        option.value = d.date;
+        option.textContent = d.date;
+        dateSelect.appendChild(option);
+      });
+    }
+
+    // Initialize dropdowns
+    const sourceSelect = document.getElementById('source-select');
     const dateSelect = document.getElementById('date-select');
-    window.BENCHMARK_DATA.forEach(d => {
-      const option = document.createElement('option');
-      option.value = d.date;
-      option.textContent = d.date;
-      dateSelect.appendChild(option);
-    });
+    sourceSelect.value = window.INITIAL_SOURCE;
+    populateDateDropdown(sourceSelect.value);
 
     // Handle date selection
     function handleDateChange() {
       const selectedDate = dateSelect.value;
       window.location.hash = selectedDate;
-      renderData(selectedDate);
+      renderData(selectedDate, sourceSelect.value);
+    }
+
+    function handleSourceChange() {
+      const source = sourceSelect.value;
+      setSourceInUrl(source);
+      populateDateDropdown(source);
+      handleHashChange();
     }
 
     dateSelect.addEventListener('change', handleDateChange);
+    sourceSelect.addEventListener('change', handleSourceChange);
 
     // Handle hash changes
     function handleHashChange() {
+      const source = sourceSelect.value;
+      const benchmarkData = getBenchmarkDataForSource(source);
       const hash = window.location.hash.slice(1);
-      const selectedDate = hash || window.BENCHMARK_DATA[window.BENCHMARK_DATA.length - 1].date;
+      if (benchmarkData.length === 0) {
+        renderNoData(source);
+        return;
+      }
+      const hasHashedDate = benchmarkData.some(d => d.date === hash);
+      const selectedDate = hasHashedDate
+        ? hash
+        : benchmarkData[benchmarkData.length - 1].date;
+      if (!hasHashedDate) {
+        const url = new URL(window.location.href);
+        url.hash = selectedDate;
+        window.history.replaceState({}, '', url.pathname + url.search + url.hash);
+      }
       dateSelect.value = selectedDate;
-      renderData(selectedDate);
+      renderData(selectedDate, source);
     }
 
     window.addEventListener('hashchange', handleHashChange);

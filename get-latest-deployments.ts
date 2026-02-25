@@ -49,7 +49,12 @@ const processBuildLogs = async (deployment: Deployments) => {
     }
   }
 
-  assert(npmTime !== null, 'NPM time is not set')
+  try {
+    assert(npmTime !== null, 'NPM time is not set for ' + deployment.name)
+  } catch (error) {
+    console.error(buildLogs.map((l) => l.text).join('\n'))
+    throw error
+  }
 
   const registry = shortestCommonPrefix([...registries.keys()])
 
