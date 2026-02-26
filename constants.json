@@ -1,7 +1,15 @@
 {
   "registries": {
-    "npm": "https://registry.npmjs.org/",
-    "vsr": "https://registry.vlt.io/npm/"
+    "npm": {
+      "registry": "https://registry.npmjs.org/"
+    },
+    "vsr": {
+      "registry": "https://registry.vlt.io/npm/"
+    },
+    "aws": {
+      "registry": "https://vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/",
+      "npmrc": "registry=https://vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/\n//vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/:always-auth=true\n//vlt-451504312483.d.codeartifact.us-east-1.amazonaws.com/npm/code-artifact-benchmark-test/:_authToken=${CODEARTIFACT_AUTH_TOKEN}"
+    }
   },
   "teamId": "team_I0bmFHPp3qnoaSnAA6xP70tU",
   "projectSettings": {

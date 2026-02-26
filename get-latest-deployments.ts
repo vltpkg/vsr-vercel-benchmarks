@@ -49,12 +49,7 @@ const processBuildLogs = async (deployment: Deployments) => {
     }
   }
 
-  try {
-    assert(npmTime !== null, 'NPM time is not set for ' + deployment.name)
-  } catch (error) {
-    console.error(buildLogs.map((l) => l.text).join('\n'))
-    throw error
-  }
+  assert(npmTime !== null, 'NPM time is not set for ' + deployment.name)
 
   const registry = shortestCommonPrefix([...registries.keys()])
 
@@ -81,7 +76,7 @@ async function getLatestDeployments({
   limit = '100',
   filter = [],
   fetchTiming: includeFetchTiming = false,
-  registry = ['npm', 'vsr'],
+  registry = ['npm', 'vsr', 'aws'],
   variant: variants = ['lockfile', 'no-lockfile'],
 }: {
   full?: boolean

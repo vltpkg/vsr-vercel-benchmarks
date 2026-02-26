@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 import { parseArgs } from 'util'
-import { getBenchmarkProjects, createCombinations } from './util.ts'
+import { getBenchmarkProjects } from './util.ts'
 import constants from './constants.json' with { type: 'json' }
 import { Vercel } from '@vercel/sdk'
 import { readFile } from 'fs/promises'
@@ -18,11 +18,17 @@ const VERCEL_TOKEN = process.env.VERCEL_TOKEN
 assert(VERCEL_TOKEN, 'VERCEL_TOKEN is not set in .env')
 const vercel = new Vercel({ bearerToken: VERCEL_TOKEN })
 
+type RegistryConfig = {
+  key: string
+  registry: string
+  npmrc?: string
+}
+
 async function triggerBenchmark({
   full = false,
   limit = '100',
   filter = [],
-  registry = ['npm', 'vsr'],
+  registry = ['npm', 'vsr', 'aws'],
   // We are limited to 120 deployments before being rate limited by Vercel
   // so we can only run one variant at a time.
   variant: variants = [/* 'lockfile', */ 'no-lockfile'],
@@ -43,11 +49,14 @@ async function triggerBenchmark({
     `Found ${projects.length} projects: ${projects.map((p) => p.name).join(', ')}`,
   )
 
-  const registries = registry.length
-    ? Object.entries(REGISTRIES)
-        .filter(([key]) => registry.includes(key))
-        .map(([_, value]) => value)
-    : Object.values(REGISTRIES)
+  const registries: RegistryConfig[] = (
+    registry.length
+      ? Object.entries(REGISTRIES).filter(([key]) => registry.includes(key))
+      : Object.entries(REGISTRIES)
+  ).map(([key, value]) => ({
+    key,
+    ...(value as Omit<RegistryConfig, 'key'>),
+  }))
 
   const deploymentsToCreate = await Promise.all(
     projects.map(async (project) => {
@@ -67,8 +76,8 @@ async function triggerBenchmark({
         readProjectFile('package-lock.json'),
       ])
 
-      return createCombinations([registries, variants]).map(
-        ([registry, variant]) => {
+      return variants.flatMap((variant) =>
+        registries.map((registry) => {
           return {
             teamId: TEAM_ID,
             requestBody: {
@@ -79,15 +88,18 @@ async function triggerBenchmark({
                 ...(variant === 'lockfile'
                   ? [{ file: 'package-lock.json', data: pkgLock }]
                   : []),
+                ...(registry.npmrc
+                  ? [{ file: '.npmrc', data: registry.npmrc }]
+                  : []),
               ],
               projectSettings: {
                 ...PROJECT_SETTINGS,
                 installCommand:
-                  `${registry ? `NPM_CONFIG_REGISTRY=${registry}` : ''} ${PROJECT_SETTINGS.installCommand}`.trim(),
+                  `${registry.registry ? `NPM_CONFIG_REGISTRY=${registry.registry}` : ''} ${PROJECT_SETTINGS.installCommand}`.trim(),
               },
             },
           }
-        },
+        }),
       )
     }),
   ).then((deployments) => deployments.flat())
@@ -112,10 +124,11 @@ async function triggerBenchmark({
     isPackageLock: request.requestBody.files?.some(
       (f) => f.file === 'package-lock.json',
     ),
+    files: request.requestBody.files.map((f) => f.file),
     registry:
       request.requestBody.projectSettings.installCommand?.match(
         /NPM_CONFIG_REGISTRY=([^\s]+)/,
-      )?.[1] ?? REGISTRIES.npm,
+      )?.[1] ?? REGISTRIES.npm.registry,
     ...(full ? { deployment } : {}),
   }))
 }

@@ -17,6 +17,8 @@ import lockfile_data_2 from './lockfile/002.json' with { type: 'json' }
 import lockfile_data_3 from './lockfile/003.json' with { type: 'json' }
 import lockfile_data_4 from './lockfile/004.json' with { type: 'json' } // invalidated cache
 import lockfile_data_5 from './lockfile/005.json' with { type: 'json' } // warm cache
+import lockfile_data_6 from './lockfile/006.json' with { type: 'json' } // aws vs vsr
+import lockfile_data_7 from './lockfile/007.json' with { type: 'json' } // aws vs vsr again (warm cache probably)
 
 type DataSource = 'no-lockfile' | 'lockfile'
 
@@ -41,6 +43,8 @@ const rawLockfileData = [
   lockfile_data_3,
   lockfile_data_4,
   lockfile_data_5,
+  lockfile_data_6,
+  lockfile_data_7,
 ]
 
 // Configuration: minimum number of days needed to show trend chart
@@ -72,6 +76,8 @@ interface Deployment {
   fetchTiming?: [string, number][]
 }
 
+type RegistryKind = 'npm' | 'vsr' | 'aws'
+
 function getEffectiveDuration(deployment: Deployment): number | null {
   return deployment.npmTime ?? deployment.buildDuration
 }
@@ -89,6 +95,25 @@ interface FetchTimingGaps {
   manifestBySpeed: FetchTimingGap[]
   tarball: FetchTimingGap[]
   tarballBySpeed: FetchTimingGap[]
+}
+
+function normalizeFetchTimingPath(fetchUrl: string): string {
+  const parsed = new URL(fetchUrl)
+  const host = parsed.hostname.toLowerCase()
+  let path = parsed.pathname.replace(/^\//, '').replaceAll(/%2F/gi, '/')
+
+  if (host.includes('codeartifact') || host.includes('amazonaws.com')) {
+    // CodeArtifact URLs include /npm/<repository>/...; trim that prefix.
+    path = path.replace(/^npm\/[^/]+\//, '')
+  } else if (host.includes('vlt.io') || host.includes('vlt.sh')) {
+    // vlt URLs include /npm/...; trim this prefix for parity with npmjs paths.
+    path = path.replace(/^npm\//, '')
+  } else if (path.startsWith('npm/')) {
+    // Fallback normalization for any npm proxy-style path.
+    path = path.replace(/^npm\//, '')
+  }
+
+  return path
 }
 
 function analyzeFetchTimingGaps(
@@ -109,13 +134,13 @@ function analyzeFetchTimingGaps(
 
   const npmTiming = new Map(
     npmDeployment.fetchTiming.map(([url, duration]) => [
-      new URL(url).pathname.replace(/^\//, '').replaceAll(/%2F/gi, '/'),
+      normalizeFetchTimingPath(url),
       duration,
     ]),
   )
   const vsrTiming = new Map(
     vsrDeployment.fetchTiming.map(([url, duration]) => [
-      new URL(url).pathname.replace(/^\/npm\//, '').replaceAll(/%2F/gi, '/'),
+      normalizeFetchTimingPath(url),
       duration,
     ]),
   )
@@ -167,10 +192,17 @@ function analyzeFetchTimingGaps(
   }
 }
 
-function getRegistryKind(deployment: Deployment): 'npm' | 'vsr' | undefined {
+function getRegistryKind(deployment: Deployment): RegistryKind | undefined {
   const normalized = deployment.registry.trim().toLowerCase()
   if (normalized === 'npm' || normalized === 'vsr') {
     return normalized
+  }
+  if (
+    normalized === 'aws' ||
+    normalized.includes('codeartifact') ||
+    normalized.includes('amazonaws.com')
+  ) {
+    return 'aws'
   }
 
   if (normalized.includes('npmjs.org')) {
@@ -191,6 +223,12 @@ function getRegistryKind(deployment: Deployment): 'npm' | 'vsr' | undefined {
     if (url.hostname.includes('npmjs.org')) {
       return 'npm'
     }
+    if (
+      url.hostname.includes('codeartifact') ||
+      url.hostname.includes('amazonaws.com')
+    ) {
+      return 'aws'
+    }
     if (url.hostname.includes('vlt.io') || url.hostname.includes('vlt.sh')) {
       return 'vsr'
     }
@@ -205,6 +243,9 @@ function getRegistryKind(deployment: Deployment): 'npm' | 'vsr' | undefined {
       if (host.includes('npmjs.org')) {
         return 'npm'
       }
+      if (host.includes('codeartifact') || host.includes('amazonaws.com')) {
+        return 'aws'
+      }
       if (host.includes('vlt.io') || host.includes('vlt.sh')) {
         return 'vsr'
       }
@@ -218,7 +259,10 @@ function getRegistryKind(deployment: Deployment): 'npm' | 'vsr' | undefined {
 
 function processData(latest: Deployment[]) {
   // Group deployments by name
-  const grouped = new Map<string, { npm?: Deployment; vsr?: Deployment }>()
+  const grouped = new Map<
+    string,
+    { npm?: Deployment; vsr?: Deployment; npmLabel?: 'npm' | 'aws' }
+  >()
 
   for (const deployment of latest) {
     const name = deployment.name
@@ -227,8 +271,9 @@ function processData(latest: Deployment[]) {
     }
     const group = grouped.get(name)!
     const registryKind = getRegistryKind(deployment)
-    if (registryKind === 'npm') {
+    if (registryKind === 'npm' || registryKind === 'aws') {
       group.npm = deployment
+      group.npmLabel = registryKind
     } else if (registryKind === 'vsr') {
       group.vsr = deployment
     }
@@ -239,6 +284,7 @@ function processData(latest: Deployment[]) {
     name: string
     npm: Deployment | undefined
     vsr: Deployment | undefined
+    npmLabel: 'npm' | 'aws'
     hasError: boolean
     fetchTimingGaps: FetchTimingGaps
   }> = []
@@ -255,6 +301,7 @@ function processData(latest: Deployment[]) {
         name: name.replace('benchmark-', ''),
         npm: group.npm,
         vsr: group.vsr,
+        npmLabel: group.npmLabel ?? 'npm',
         hasError:
           !group.npm ||
           !group.vsr ||
@@ -278,6 +325,42 @@ function processData(latest: Deployment[]) {
     (sum, c) => sum + (c.vsr ? getEffectiveDuration(c.vsr) || 0 : 0),
     0,
   )
+  const trendDurations: Record<RegistryKind, number[]> = {
+    npm: [],
+    vsr: [],
+    aws: [],
+  }
+  for (const deployment of latest) {
+    const kind = getRegistryKind(deployment)
+    if (!kind || deployment.state === 'ERROR') {
+      continue
+    }
+    const duration = getEffectiveDuration(deployment)
+    if (duration !== null) {
+      trendDurations[kind].push(duration)
+    }
+  }
+  const average = (values: number[]) =>
+    values.length
+      ? values.reduce((sum, value) => sum + value, 0) / values.length
+      : null
+  const trendAveragesMs = {
+    npm: average(trendDurations.npm),
+    vsr: average(trendDurations.vsr),
+    aws: average(trendDurations.aws),
+  }
+  const trendCounts = {
+    npm: trendDurations.npm.length,
+    vsr: trendDurations.vsr.length,
+    aws: trendDurations.aws.length,
+  }
+  const npmLabels = new Set(comparisons.map((c) => c.npmLabel))
+  const npmDisplayLabel =
+    npmLabels.size === 1
+      ? [...npmLabels][0] === 'aws'
+        ? 'AWS'
+        : 'npm'
+      : 'npm/AWS'
 
   // Find earliest and latest deployment times
   const allTimes = latest
@@ -294,6 +377,9 @@ function processData(latest: Deployment[]) {
     errorCount,
     totalNpmTime,
     totalVsrTime,
+    trendAveragesMs,
+    trendCounts,
+    npmDisplayLabel,
     earliestDate,
     latestDate,
   }
@@ -338,17 +424,21 @@ export async function GET(request: Request) {
     (result, [source, processedData]) => {
       result[source as DataSource] = processedData.map((entry) => ({
         date: entry.date,
-        npmTotal: entry.totalNpmTime / 1000, // Convert to seconds
-        vsrTotal: entry.totalVsrTime / 1000,
         npmAverage:
-          entry.validCount > 0
-            ? entry.totalNpmTime / 1000 / entry.validCount
-            : 0,
+          entry.trendAveragesMs.npm === null
+            ? null
+            : entry.trendAveragesMs.npm / 1000,
         vsrAverage:
-          entry.validCount > 0
-            ? entry.totalVsrTime / 1000 / entry.validCount
-            : 0,
-        validCount: entry.validCount,
+          entry.trendAveragesMs.vsr === null
+            ? null
+            : entry.trendAveragesMs.vsr / 1000,
+        awsAverage:
+          entry.trendAveragesMs.aws === null
+            ? null
+            : entry.trendAveragesMs.aws / 1000,
+        npmCount: entry.trendCounts.npm,
+        vsrCount: entry.trendCounts.vsr,
+        awsCount: entry.trendCounts.aws,
       }))
       return result
     },
@@ -462,6 +552,10 @@ function generateHTML(
     }
     .npm-bar {
       background: linear-gradient(90deg, #CB3837 0%, #E74C3C 100%);
+      color: white;
+    }
+    .aws-bar {
+      background: #FF9900;
       color: white;
     }
     .vsr-bar {
@@ -632,6 +726,9 @@ function generateHTML(
     .legend-color.vsr {
       background: #000000;
     }
+    .legend-color.aws {
+      background: #FF9900;
+    }
     .hidden {
       display: none;
     }
@@ -757,6 +854,8 @@ function generateHTML(
     }
 
     function renderComparison(comparison) {
+      const npmLabel = comparison.npmLabel === 'aws' ? 'AWS' : 'npm';
+      const npmBarClass = comparison.npmLabel === 'aws' ? 'aws-bar' : 'npm-bar';
       const npmState = comparison.npm?.state || 'MISSING';
       const vsrState = comparison.vsr?.state || 'MISSING';
       const npmTime = comparison.npm ? (comparison.npm.npmTime ?? comparison.npm.buildDuration) : null;
@@ -808,7 +907,7 @@ function generateHTML(
                     <tr>
                       <th>#</th>
                       <th>URL</th>
-                      <th>npm</th>
+                      <th>\${npmLabel}</th>
                       <th>vlt</th>
                       <th>Gap</th>
                     </tr>
@@ -839,9 +938,9 @@ function generateHTML(
           <h3>\${comparison.name}</h3>
           <div class="chart">
             <div class="bar-row">
-              <div class="label">npm</div>
+              <div class="label">\${npmLabel}</div>
               <div class="bar-container">
-                <div class="bar npm-bar" style="width: \${npmPercent}%">
+                <div class="bar \${npmBarClass}" style="width: \${npmPercent}%">
                   <span class="value">\${npmSeconds}s</span>
                 </div>
               </div>
@@ -867,7 +966,7 @@ function generateHTML(
           <h3>\${comparison.name}</h3>
           <div class="error-details">
             <div class="error-row">
-              <div class="label">npm</div>
+              <div class="label">\${npmLabel}</div>
               <div class="state-badge \${npmState === 'ERROR' ? 'error' : 'missing'}">\${npmState}</div>
               <div class="time">\${npmTime ? (npmTime / 1000).toFixed(2) + 's' : 'N/A'}</div>
             </div>
@@ -941,33 +1040,78 @@ function generateHTML(
         const day = String(parsed.getDate()).padStart(2, '0');
         return month + '/' + day;
       };
+      const getX = (index) => {
+        if (trendData.length <= 1) {
+          return padding.left + plotWidth / 2;
+        }
+        const xStep = plotWidth / (trendData.length - 1);
+        return padding.left + index * xStep;
+      };
 
-      const maxTime = Math.max(...trendData.flatMap(d => [d.npmAverage, d.vsrAverage]));
-      const minTime = Math.min(...trendData.flatMap(d => [d.npmAverage, d.vsrAverage]));
+      const series = [
+        { key: 'npmAverage', countKey: 'npmCount', label: 'npm', color: '#CB3837', className: 'npm' },
+        { key: 'vsrAverage', countKey: 'vsrCount', label: 'vlt', color: '#000000', className: 'vsr' },
+        { key: 'awsAverage', countKey: 'awsCount', label: 'AWS', color: '#FF9900', className: 'aws' },
+      ]
+        .map((seriesDef) => ({
+          ...seriesDef,
+          points: trendData.map((d, i) => {
+            const value = Number.isFinite(d[seriesDef.key]) ? d[seriesDef.key] : null;
+            return {
+              x: getX(i),
+              value,
+              count: d[seriesDef.countKey] || 0,
+            };
+          }),
+        }))
+        .filter((seriesDef) => seriesDef.points.some((point) => point.value !== null));
+
+      if (series.length === 0) {
+        return '';
+      }
+
+      const allValues = series.flatMap((seriesDef) =>
+        seriesDef.points
+          .map((point) => point.value)
+          .filter((value) => value !== null),
+      );
+      const maxTime = Math.max(...allValues);
+      const minTime = Math.min(...allValues);
       const yRange = maxTime - minTime;
-      const yPadding = yRange * 0.1;
+      const yPadding = yRange === 0 ? Math.max(maxTime * 0.1, 0.5) : yRange * 0.1;
       const yMin = Math.max(0, minTime - yPadding);
       const yMax = maxTime + yPadding;
+      const ySpan = yMax - yMin || 1;
 
-      const xStep = plotWidth / (trendData.length - 1);
-      const npmPoints = trendData.map((d, i) => {
-        const x = padding.left + i * xStep;
-        const y = padding.top + plotHeight - ((d.npmAverage - yMin) / (yMax - yMin)) * plotHeight;
-        return { x, y, value: d.npmAverage, count: d.validCount };
-      });
-      const vsrPoints = trendData.map((d, i) => {
-        const x = padding.left + i * xStep;
-        const y = padding.top + plotHeight - ((d.vsrAverage - yMin) / (yMax - yMin)) * plotHeight;
-        return { x, y, value: d.vsrAverage, count: d.validCount };
-      });
+      const seriesWithY = series.map((seriesDef) => ({
+        ...seriesDef,
+        points: seriesDef.points.map((point) => ({
+          ...point,
+          y:
+            point.value === null
+              ? null
+              : padding.top + plotHeight - ((point.value - yMin) / ySpan) * plotHeight,
+        })),
+      }));
 
-      const npmPath = npmPoints.map((p, i) => \`\${i === 0 ? 'M' : 'L'} \${p.x} \${p.y}\`).join(' ');
-      const vsrPath = vsrPoints.map((p, i) => \`\${i === 0 ? 'M' : 'L'} \${p.x} \${p.y}\`).join(' ');
+      const buildPath = (points) => {
+        let path = '';
+        let drawing = false;
+        points.forEach((point) => {
+          if (point.y === null) {
+            drawing = false;
+            return;
+          }
+          path += \`\${drawing ? ' L' : 'M'} \${point.x} \${point.y}\`;
+          drawing = true;
+        });
+        return path.trim();
+      };
 
       const yAxisSteps = 5;
       const yAxisLabels = Array.from({ length: yAxisSteps }, (_, i) => {
-        const value = yMin + (yMax - yMin) * (i / (yAxisSteps - 1));
-        const y = padding.top + plotHeight - ((value - yMin) / (yMax - yMin)) * plotHeight;
+        const value = yMin + ySpan * (i / (yAxisSteps - 1));
+        const y = padding.top + plotHeight - ((value - yMin) / ySpan) * plotHeight;
         return { y, label: value.toFixed(0) + 's' };
       });
 
@@ -985,33 +1129,31 @@ function generateHTML(
                     font-size="12" fill="#666">\${label.label}</text>
             \`).join('')}
             \${trendData.map((d, i) => {
-              const x = padding.left + i * xStep;
+              const x = getX(i);
               return \`<text x="\${x}" y="\${chartHeight - padding.bottom + 20}" text-anchor="middle" 
                            font-size="12" fill="#666">\${formatXAxisDate(d.date)}</text>\`;
             }).join('')}
-            <path d="\${npmPath}" fill="none" stroke="#CB3837" stroke-width="3" />
-            <path d="\${vsrPath}" fill="none" stroke="#000000" stroke-width="3" />
-            \${npmPoints.map(p => \`
-              <circle cx="\${p.x}" cy="\${p.y}" r="5" fill="#CB3837" stroke="white" stroke-width="2">
-                <title>npm: \${p.value.toFixed(2)}s avg (\${p.count} projects)</title>
-              </circle>
+            \${seriesWithY.map((seriesDef) => \`
+              <path d="\${buildPath(seriesDef.points)}" fill="none" stroke="\${seriesDef.color}" stroke-width="3" />
             \`).join('')}
-            \${vsrPoints.map(p => \`
-              <circle cx="\${p.x}" cy="\${p.y}" r="5" fill="#000000" stroke="white" stroke-width="2">
-                <title>vlt: \${p.value.toFixed(2)}s avg (\${p.count} projects)</title>
-              </circle>
-            \`).join('')}
+            \${seriesWithY.map((seriesDef) =>
+              seriesDef.points
+                .filter((point) => point.y !== null)
+                .map((point) => \`
+                  <circle cx="\${point.x}" cy="\${point.y}" r="5" fill="\${seriesDef.color}" stroke="white" stroke-width="2">
+                    <title>\${seriesDef.label}: \${point.value.toFixed(2)}s avg (\${point.count} projects)</title>
+                  </circle>
+                \`).join('')
+            ).join('')}
           </svg>
         </div>
         <div class="chart-legend">
-          <div class="legend-item">
-            <div class="legend-color npm"></div>
-            <span>npm</span>
-          </div>
-          <div class="legend-item">
-            <div class="legend-color vsr"></div>
-            <span>vlt</span>
-          </div>
+          \${seriesWithY.map((seriesDef) => \`
+            <div class="legend-item">
+              <div class="legend-color \${seriesDef.className}"></div>
+              <span>\${seriesDef.label}</span>
+            </div>
+          \`).join('')}
         </div>
       </div>
       \`;
@@ -1055,6 +1197,8 @@ function generateHTML(
       
       // Store current data for toggle functionality
       window.CURRENT_DATA = data;
+      const npmDisplayLabel = data.npmDisplayLabel || 'npm';
+      const summaryNpmBarClass = npmDisplayLabel === 'AWS' ? 'aws-bar' : 'npm-bar';
 
       // Update answer
       const answerContainer = document.getElementById('answer-container');
@@ -1101,9 +1245,9 @@ function generateHTML(
             <h3>Average Build Time per Project (\${data.validCount} projects)</h3>
             <div class="chart">
               <div class="bar-row">
-                <div class="label">npm</div>
+                <div class="label">\${npmDisplayLabel}</div>
                 <div class="bar-container">
-                  <div class="bar npm-bar" style="width: \${npmPercent}%">
+                  <div class="bar \${summaryNpmBarClass}" style="width: \${npmPercent}%">
                     <span class="value">\${npmSeconds}s avg</span>
                   </div>
                 </div>
@@ -1117,7 +1261,7 @@ function generateHTML(
                 </div>
               </div>
             </div>
-            <div class="speedup"><strong>\${speedDiffText}</strong> (Total: npm \${npmTotal}s, vlt \${vsrTotal}s)</div>
+            <div class="speedup"><strong>\${speedDiffText}</strong> (Total: \${npmDisplayLabel} \${npmTotal}s, vlt \${vsrTotal}s)</div>
           </div>
         \`;
       } else {

@@ -5,7 +5,8 @@
     "init-new-project": "node --env-file=.env init-new-project.ts",
     "deploy": "vercel --prod",
     "get-latest-deployments": "node --env-file=.env get-latest-deployments.ts",
-    "trigger-deployments": "node --env-file=.env trigger-deployments.ts"
+    "trigger-deployments": "node --env-file=.env trigger-deployments.ts",
+    "set-codeartifact-auth-token": "node --env-file=.env set-codeartifact-auth-token.ts"
   },
   "license": "ISC",
   "dependencies": {

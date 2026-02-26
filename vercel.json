@@ -1,0 +1,15 @@
+{
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/api/benchmark"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/api/benchmark",
+      "destination": "/",
+      "permanent": true
+    }
+  ]
+}
